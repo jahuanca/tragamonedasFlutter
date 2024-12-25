@@ -1,0 +1,17 @@
+const String addressIdGet = 'addressIdGet';
+const String aliasIdGet = 'aliasIdGet';
+const String currencyValuesIdGet = 'currencyValuesIdGet';
+const String descriptionIdGet = 'descriptionIdGet';
+const String emailIdGet = 'emailIdGet';
+const String forATMIdGet = 'forATMIdGet';
+const String forClientIdGet = 'forClientIdGet';
+const String lastNameIdGet = 'lastNameIdGet';
+const String montoIdGet = 'montoIdGet';
+const String nameIdGet = 'nameIdGet';
+const String observationIdGet = 'observationIdGet';
+const String passwordIdGet = 'passwordIdGet';
+const String phoneNumberIdGet = 'phoneNumberIdGet';
+const String porcentageIdGet = 'porcentageIdGet';
+const String purchaseDateIdGet = 'purchaseDateIdGet';
+const String pointsIdGet = 'pointsIdGet';
+const String machinesIdGet = 'machinesIdGet';
