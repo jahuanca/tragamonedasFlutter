@@ -42,7 +42,7 @@ class HomeSlotMachinePointPage extends StatelessWidget {
           child: Column(
             children: [
               _chooseDates(controller: controller, context: context),
-              _footer(),
+              _footer(controller: controller),
               _list(
                 controller: controller,
                 size: size,
@@ -91,22 +91,24 @@ class HomeSlotMachinePointPage extends StatelessWidget {
     );
   }
 
-  Widget _footer() {
+  Widget _footer({
+    required HomeSlotMachinePointController controller
+  }) {
     return Row(
       children: [
         _footerItem(
           title: 'Ingresos',
-          value: '550.30',
+          value: controller.incomesInsert.toString(),
           color: infoColor(),
         ),
         _footerItem(
           title: 'Salidas',
-          value: '200.20',
+          value: controller.incomesExit.toString(),
           color: dangerColor(),
         ),
         _footerItem(
           title: 'Ganancia',
-          value: '350.20',
+          value: controller.gains.toString(),
           color: successColor(),
         ),
       ],
@@ -181,14 +183,22 @@ class HomeSlotMachinePointPage extends StatelessWidget {
         child: SizedBox(
           height: 75,
           child: ListTile(
-            title: Text(
-              'S/ ${item.amount}',
-              style: const TextStyle(fontWeight: FontWeight.bold),
+            title: Row(
+              children: [
+                IconWidget(
+                  padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 5),
+                  iconData: (item.typeIncome == 'Ingreso') ? Icons.add : Icons.remove, size: 20,),
+                Text(
+                  'S/ ${item.amount}',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
-            leading: (item.typeIncome == 'Ingreso')
-                ? const Icon(Icons.add)
-                : const Icon(Icons.remove),
-            subtitle: Text(item.date.format(formatDate: 'EEEE d/MM hh:mm a').orEmpty()),
+            subtitle: Row(
+              children: [
+                Text(item.date.format(formatDate: 'EEEE d/MM hh:mm a').orEmpty()),
+              ],
+            ),
             trailing: CircleAvatar(
               radius: 15,
               backgroundColor:

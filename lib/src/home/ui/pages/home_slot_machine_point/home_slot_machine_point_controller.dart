@@ -19,6 +19,18 @@ class HomeSlotMachinePointController extends GetxController {
     required this.getIncomesUseCase,
   });
 
+  double get incomesInsert {
+    return incomes.fold(0, (previous, current) => previous + (current.typeIncome == 'Ingreso' ? current.amount : defaultDouble));
+  }
+
+  double get incomesExit {
+    return incomes.fold(0, (previous, current) => previous + (current.typeIncome == 'Salida' ? current.amount : defaultDouble));
+  }
+
+  double get gains {
+    return incomesInsert - incomesExit;
+  }
+
   @override
   void onInit() {
     if (Get.arguments != null) {
