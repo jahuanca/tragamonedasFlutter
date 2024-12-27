@@ -24,4 +24,9 @@ class PointRepositoryImplementation extends PointRepository {
   Future<ResultType<PointMachineEntity, ErrorEntity>> createPointMachine({required PointMachineEntity pointMachineEntity}) {
     return datastore.createPointMachine(pointMachineEntity: pointMachineEntity);
   }
+  
+  @override
+  Future<ResultType<List<PointMachineEntity>, ErrorEntity>> getPoinstMachine() {
+    return datastore.getPoinstMachine();
+  }
 }

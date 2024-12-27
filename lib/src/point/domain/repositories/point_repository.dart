@@ -5,6 +5,8 @@ import 'package:utils/utils.dart';
 
 abstract class PointRepository {
   Future<ResultType<List<PointEntity>, ErrorEntity>> getPoints();
+  
+  Future<ResultType<List<PointMachineEntity>, ErrorEntity>> getPoinstMachine();
 
   Future<ResultType<PointEntity, ErrorEntity>> createPoint({
     required PointEntity pointEntity,

@@ -56,4 +56,22 @@ class PointDatastoreImplementation extends PointDatastore {
               errorMessage: appResponseHttp.body));
     }
   }
+
+  @override
+  Future<ResultType<List<PointMachineEntity>, ErrorEntity>>
+      getPoinstMachine() async {
+    AppHttpManager appHttpManager = AppHttpManager();
+    AppResponseHttp appResponseHttp =
+        await appHttpManager.get(url: '/point-machine');
+    if (appResponseHttp.isSuccessful) {
+      return Success(
+          data: pointMachineEntityFromJsonList(appResponseHttp.body));
+    } else {
+      return Error(
+          error: ErrorEntity(
+              statusCode: appResponseHttp.statusCode,
+              title: 'Error al listar los puntos',
+              errorMessage: appResponseHttp.body));
+    }
+  }
 }

@@ -19,7 +19,7 @@ class LoginController extends GetxController {
   });
 
   void _goToChooseSlotMachines() {
-    Get.to(() => const ChooseSlotMachinePage());
+    Get.to(() => const ChooseSlotMachinePointPage());
   }
 
   void onChangedEmail(String value){

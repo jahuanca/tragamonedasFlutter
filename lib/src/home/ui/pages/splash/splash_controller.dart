@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:traga_monedas/src/home/di/choose_slot_machine_point_binding.dart';
 import 'package:traga_monedas/src/home/di/login_binding.dart';
 import 'package:traga_monedas/src/home/ui/pages/choose_slot_machine_point/choose_slot_machine_point_page.dart';
 import 'package:traga_monedas/src/home/ui/pages/login/login_page.dart';
@@ -16,6 +17,6 @@ class SplashController extends GetxController {
   }
 
   void goChooseSlotMachine() {
-    Get.to(() => const ChooseSlotMachinePage());
+    Get.to(() => const ChooseSlotMachinePointPage(), binding:  ChooseSlotMachinePointBinding());
   }
 }

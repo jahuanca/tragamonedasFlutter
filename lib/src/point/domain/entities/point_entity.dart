@@ -49,7 +49,7 @@ class PointEntity {
   });
 
   Map<String, dynamic> toJson() => {
-_idKey: id,
+        _idKey: id,
         _firstNameKey: firstName,
         _lastNameKey: lastName,
         _aliasKey: alias,
@@ -71,7 +71,7 @@ _idKey: id,
         address: json[_addressKey],
         phoneNumber: json[_phoneNumberKey],
         email: json[_emailKey],
-        porcentage: (json[_porcentageKey] as num).toDouble() ,
+        porcentage: (json[_porcentageKey] as num).toDouble(),
         latitude: json[_latitudeKey],
         longitude: json[_longitudeKey],
         createdAt: DateTime.tryParse(json[_createdAtKey]),

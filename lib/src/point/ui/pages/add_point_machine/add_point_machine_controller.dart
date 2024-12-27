@@ -1,11 +1,15 @@
 
 import 'package:get/get.dart';
+import 'package:traga_monedas/src/machine/di/add_machine_binding.dart';
 import 'package:traga_monedas/src/machine/domain/entities/machine_entity.dart';
 import 'package:traga_monedas/src/machine/domain/use_cases/get_machines_use_case.dart';
+import 'package:traga_monedas/src/machine/ui/pages/add_machine/add_machine_page.dart';
+import 'package:traga_monedas/src/point/di/add_point_binding.dart';
 import 'package:traga_monedas/src/point/domain/entities/point_entity.dart';
 import 'package:traga_monedas/src/point/domain/entities/point_machine_entity.dart';
 import 'package:traga_monedas/src/point/domain/use_cases/create_point_machine_use_case.dart';
 import 'package:traga_monedas/src/point/domain/use_cases/get_points_use_case.dart';
+import 'package:traga_monedas/src/point/ui/pages/add_point/add_point_page.dart';
 import 'package:traga_monedas/src/utils/ui/ids_get.dart';
 import 'package:utils/utils.dart';
 
@@ -130,7 +134,7 @@ class AddPointMachineController extends GetxController {
     if(resultType is Success){
       PointMachineEntity pointMachineEntity = resultType.data as PointMachineEntity;
       Get.back(
-        result: pointMachineEntity,
+        result: pointMachineEntity, 
       );
     }else{
       ErrorEntity errorEntity = resultType.error as ErrorEntity;
@@ -143,6 +147,14 @@ class AddPointMachineController extends GetxController {
     validando = false;
     update([validandoIdGet]);
 
+  }
+
+  void goAddPoint(){
+    Get.to(()=> const AddPointPage(), binding: AddPointBinding());
+  }
+
+  void goAddMachine(){
+    Get.to(()=> const AddMachinePage(), binding: AddMachineBinding());
   }
 
 }

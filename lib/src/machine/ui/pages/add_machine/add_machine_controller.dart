@@ -76,7 +76,7 @@ class AddMachineController extends GetxController {
 
   void onChangedPurchaseDate(DateTime? value) {
     ValidateResult validatePurchaseDate =
-        validateRequired(label: 'Fecha de compra', value: value);
+        validateRequired(label: 'Fecha de compra', value: value.toString());
     errorPuchaseDate = validatePurchaseDate.error;
     purchaseDate = DateTime.tryParse(validatePurchaseDate.value.orEmpty());
     update([purchaseDateIdGet]);

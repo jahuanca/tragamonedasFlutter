@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:traga_monedas/src/home/domain/entities/income_entity.dart';
 import 'package:traga_monedas/src/home/ui/pages/home_slot_machine_point/home_slot_machine_point_controller.dart';
 import 'package:utils/utils.dart';
 
@@ -8,10 +9,12 @@ class HomeSlotMachinePointPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final HomeSlotMachinePointController controller =
+        Get.find<HomeSlotMachinePointController>();
     final Size size = MediaQuery.of(context).size;
 
     return GetBuilder<HomeSlotMachinePointController>(
-      init: HomeSlotMachinePointController(),
+      init: controller,
       id: pageIdGet,
       builder: (controller) => Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -25,7 +28,8 @@ class HomeSlotMachinePointPage extends StatelessWidget {
                 child: Text('HD'),
               ),
             ),
-            text: 'Hermana danner',
+            text: controller.pointMachineEntity?.pointEntity?.alias ??
+                emptyString,
             actions: [
               const IconWidget(
                 padding: EdgeInsets.only(right: 8),
@@ -37,11 +41,12 @@ class HomeSlotMachinePointPage extends StatelessWidget {
           width: size.width,
           child: Column(
             children: [
-              _chooseDates(
-                controller: controller,
-                context: context),
+              _chooseDates(controller: controller, context: context),
               _footer(),
-              _list(size: size,),
+              _list(
+                controller: controller,
+                size: size,
+              ),
             ],
           ),
         ),
@@ -53,7 +58,6 @@ class HomeSlotMachinePointPage extends StatelessWidget {
     required BuildContext context,
     required HomeSlotMachinePointController controller,
   }) {
-
     String initialDay = controller.initialDay.formatDMMYYY() ?? emptyString;
     String finalDay = controller.finalDay.formatDMMYYY() ?? emptyString;
     String rangeDateString = '$initialDay - $finalDay';
@@ -65,11 +69,10 @@ class HomeSlotMachinePointPage extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () => showDateRangePicker(
-          firstDate: DateTime.now(),
-          lastDate: DateTime.now().add(const Duration(days: 7)),
-          context: context,
-          initialEntryMode: DatePickerEntryMode.calendar
-        ),
+            firstDate: DateTime.now(),
+            lastDate: DateTime.now().add(const Duration(days: 7)),
+            context: context,
+            initialEntryMode: DatePickerEntryMode.calendar),
         child: Row(
           children: [
             const Icon(Icons.date_range_outlined),
@@ -131,12 +134,11 @@ class HomeSlotMachinePointPage extends StatelessWidget {
         elevation: 10,
         child: Container(
           decoration: BoxDecoration(
-            color: color.withAlpha(50),
-            border: Border.all(
-              color: color,
-            ),
-            borderRadius: BorderRadius.circular(borderRadius())
-          ),
+              color: color.withAlpha(50),
+              border: Border.all(
+                color: color,
+              ),
+              borderRadius: BorderRadius.circular(borderRadius())),
           child: Column(
             children: [
               Text(
@@ -156,17 +158,20 @@ class HomeSlotMachinePointPage extends StatelessWidget {
 
   Widget _list({
     required Size size,
+    required HomeSlotMachinePointController controller,
   }) {
     return SizedBox(
       height: size.height * 0.65,
       child: ListView.builder(
-        itemBuilder: (context, index) => _itemList(context: context),
-        itemCount: 5,
+        itemBuilder: (context, index) =>
+            _itemList(item: controller.incomes[index], context: context),
+        itemCount: controller.incomes.length,
       ),
     );
   }
 
   Widget _itemList({
+    required IncomeEntity item,
     required BuildContext context,
   }) {
     return Padding(
@@ -176,16 +181,22 @@ class HomeSlotMachinePointPage extends StatelessWidget {
         child: SizedBox(
           height: 75,
           child: ListTile(
-            title: const Text(
-              'S/ 70.30',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            title: Text(
+              'S/ ${item.amount}',
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            subtitle: const Text('Lunes 16/12'),
+            leading: (item.typeIncome == 'Ingreso')
+                ? const Icon(Icons.add)
+                : const Icon(Icons.remove),
+            subtitle: Text(item.date.format(formatDate: 'EEEE d/MM hh:mm a').orEmpty()),
             trailing: CircleAvatar(
-              backgroundColor: alertColor(),
-              child: const Icon(
-                Icons.warning,
+              radius: 15,
+              backgroundColor:
+                  (item.isApproved ?? false) ? successColor() : alertColor(),
+              child: Icon(
+                (item.isApproved ?? false) ? Icons.check : Icons.warning,
                 color: Colors.white,
+                size: 15,
               ),
             ),
           ),

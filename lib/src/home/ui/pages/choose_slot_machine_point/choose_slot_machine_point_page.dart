@@ -1,40 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:traga_monedas/src/home/ui/pages/choose_slot_machine_point/choose_slot_machine_point_controller.dart';
-import 'package:traga_monedas/src/home/ui/pages/choose_slot_machine_point/points_machine.dart';
+import 'package:traga_monedas/src/point/domain/entities/point_machine_entity.dart';
+import 'package:traga_monedas/src/utils/ui/ids_get.dart';
 import 'package:utils/utils.dart';
 
-class ChooseSlotMachinePage extends StatelessWidget {
-  const ChooseSlotMachinePage({super.key});
+class ChooseSlotMachinePointPage extends StatelessWidget {
+  const ChooseSlotMachinePointPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final ChooseSlotMachinePointController controller =
+        Get.find<ChooseSlotMachinePointController>();
     final Size size = MediaQuery.of(context).size;
 
     return GetBuilder<ChooseSlotMachinePointController>(
-      init: ChooseSlotMachinePointController(),
-      builder: (controller) => Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: controller.goAddPointMachine,
-          child: const Icon(Icons.add),
-        ),
-        appBar: appBarWidget(
-          text: 'Seleccione un punto',
-          actions: [
-            const IconButton(
-              onPressed: null, 
-            icon: Icon(Icons.search, color: Colors.black,),
+      init: controller,
+      builder: (controller) => RefreshIndicator(
+        onRefresh: controller.getPointsMachine,
+        child: Stack(
+          children: [
+            Scaffold(
+              floatingActionButton: FloatingActionButton(
+                onPressed: controller.goAddPointMachine,
+                child: const Icon(Icons.add),
+              ),
+              appBar: appBarWidget(text: 'Seleccione un punto', actions: [
+                const IconButton(
+                  onPressed: null,
+                  icon: Icon(
+                    Icons.search,
+                    color: Colors.black,
+                  ),
+                ),
+              ]),
+              backgroundColor: cardColor(),
+              body: SingleChildScrollView(
+                child: GetBuilder<ChooseSlotMachinePointController>(
+                  id: pointsMachineIdGet,
+                  builder: (_)=> Column(
+                    children: _slotsMachinePoint(
+                      controller: controller,
+                      size: size,
+                    ),
+                  ),
+                ),
+              ),
             ),
-          ] 
-          ),
-        backgroundColor: cardColor(),
-        body: SingleChildScrollView(
-          child: Column(
-            children: _slotsMachinePoint(
-              controller: controller,
-              size: size,
-            ),
-          ),
+            GetBuilder<ChooseSlotMachinePointController>(
+                id: validandoIdGet,
+                builder: (_) => LoadingWidget(show: controller.validando)),
+          ],
         ),
       ),
     );
@@ -46,11 +62,11 @@ class ChooseSlotMachinePage extends StatelessWidget {
   }) {
     List<Widget> pointsMachine = [];
 
-    for (int index in [0, 1, 2, 3]) {
+    for (PointMachineEntity item in controller.pointsMachine) {
       pointsMachine.add(_itemPointMachine(
         controller: controller,
         size: size,
-        index: index,
+        item: item,
       ));
     }
 
@@ -59,30 +75,25 @@ class ChooseSlotMachinePage extends StatelessWidget {
 
   Widget _itemPointMachine({
     required Size size,
-    required int index,
+    required PointMachineEntity item,
     required ChooseSlotMachinePointController controller,
   }) {
-    Map<String, String> pointMachine = pointsMachine.elementAt(index);
-
     return ItemListImageDataWidget(
-      onTap: controller.goToContentSlotMachinePoint,
+      onTap: ()=> controller.goToContentSlotMachinePoint(item),
       cardElevation: 5,
       decorationAll: BoxDecoration(
-        border: Border.all(color: primaryColor()),
-        borderRadius: BorderRadius.circular(borderRadius())
-      ),
-      paddingAll: const EdgeInsets.symmetric(
-        vertical: 8,
-        horizontal: 16
-      ),
+          border: Border.all(color: primaryColor()),
+          borderRadius: BorderRadius.circular(borderRadius())),
+      paddingAll: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       paddingImage: defaultPadding,
       width: size.width,
       height: size.height * 0.15,
       path: 'assets/icons/icon_slot_machine.png',
       storageType: StorageType.localStorage,
-      title: pointMachine['title'].orEmpty(),
-      subtitle: pointMachine['direction'],
-      detail: pointMachine['machine_name'],
+      title: item.pointEntity?.alias ?? emptyString,
+      subtitle: item.pointEntity?.address ?? emptyString,
+      detail: item.porcentage.toString(),
+      
     );
   }
 }
