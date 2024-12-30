@@ -23,7 +23,9 @@ class IncomeRepositoryImplementation extends IncomeRepository {
   }
 
   @override
-  Future<ResultType<List<IncomeEntity>, ErrorEntity>> getIncomes() {
-    return datastore.getIncomes();
+  Future<ResultType<List<IncomeEntity>, ErrorEntity>> getIncomes({
+    required int idPointMachine,
+  }) {
+    return datastore.getIncomes(idPointMachine: idPointMachine);
   }
 }

@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:traga_monedas/src/home/data/requests/auth_request.dart';
 import 'package:traga_monedas/src/home/domain/entities/user_entity.dart';
 import 'package:traga_monedas/src/home/domain/use_cases/login_use_case.dart';
-import 'package:traga_monedas/src/home/ui/pages/choose_slot_machine_point/choose_slot_machine_point_page.dart';
+import 'package:traga_monedas/src/home/ui/pages/choose_machine_point/choose_machine_point_page.dart';
 import 'package:traga_monedas/src/utils/core/data_local.dart';
 import 'package:traga_monedas/src/utils/ui/ids_get.dart';
 import 'package:utils/utils.dart';

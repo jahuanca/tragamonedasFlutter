@@ -53,7 +53,7 @@ class AddPointPage extends StatelessWidget {
                       builder: (_) => InputWidget(
                         onChanged: controller.onChangedPorcentage,
                           label: 'Porcentaje negociado',
-                          iconOverlay: Icons.numbers,
+                          iconOverlay: Icons.view_compact_outlined,
                           textInputType: TextInputType.number,
                           hintText: 'Ingrese el porcentaje'),
                     ),
@@ -67,6 +67,7 @@ class AddPointPage extends StatelessWidget {
                         builder: (_) => InputWidget(
                           onChanged: controller.onChangedAddress,
                             label: 'Dirección',
+                            maxLength: 50,
                             hintText: 'Ingrese la dirección')),
                     _itemOfMap(),
                     ButtonWidget(

@@ -1,6 +1,6 @@
 
 import 'package:get/get.dart';
-import 'package:traga_monedas/src/home/ui/pages/choose_slot_machine_point/choose_slot_machine_point_controller.dart';
+import 'package:traga_monedas/src/home/ui/pages/choose_machine_point/choose_machine_point_controller.dart';
 import 'package:traga_monedas/src/point/data/datastores/point_datastore_implementation.dart';
 import 'package:traga_monedas/src/point/data/repositories/point_repository_implementation.dart';
 import 'package:traga_monedas/src/point/domain/datastores/point_datastore.dart';

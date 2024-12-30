@@ -34,6 +34,7 @@ class ChooseSlotMachinePointController extends GetxController {
           resultType.data as List<PointMachineEntity>;
       pointsMachine = results;
     } else {
+      pointsMachine = [];
       ErrorEntity errorEntity = resultType.error as ErrorEntity;
       showSnackbarWidget(
           context: Get.overlayContext!,

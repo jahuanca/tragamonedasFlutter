@@ -54,10 +54,12 @@ class HomeSlotMachinePointController extends GetxController {
     super.onReady();
   }
 
-  void getIncomes() async {
-    validando = false;
+  Future<void> getIncomes() async {
+    validando = true;
     update([validandoIdGet]);
-    ResultType<List<IncomeEntity>, ErrorEntity> resultType = await getIncomesUseCase.execute();
+    ResultType<List<IncomeEntity>, ErrorEntity> resultType = await getIncomesUseCase.execute(
+      idPointMachine: pointMachineEntity?.id ?? defaultInt
+    );
     if(resultType is Success){
       List<IncomeEntity> results = resultType.data;
       incomes = results;
@@ -70,7 +72,7 @@ class HomeSlotMachinePointController extends GetxController {
         message: errorEntity.title,
       );
     }
-    validando = true;
+    validando = false;
     update([validandoIdGet]);
   }
 

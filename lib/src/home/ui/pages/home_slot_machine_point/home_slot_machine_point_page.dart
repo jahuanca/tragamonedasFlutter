@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:traga_monedas/src/home/domain/entities/income_entity.dart';
 import 'package:traga_monedas/src/home/ui/pages/home_slot_machine_point/home_slot_machine_point_controller.dart';
+import 'package:traga_monedas/src/home/ui/widgets/empty_widget.dart';
 import 'package:utils/utils.dart';
 
 class HomeSlotMachinePointPage extends StatelessWidget {
@@ -16,40 +17,53 @@ class HomeSlotMachinePointPage extends StatelessWidget {
     return GetBuilder<HomeSlotMachinePointController>(
       init: controller,
       id: pageIdGet,
-      builder: (controller) => Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: controller.goAddIncome,
-          child: const Icon(Icons.add),
-        ),
-        appBar: appBarWidget(
-            leading: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: CircleAvatar(
-                child: Text('HD'),
+      builder: (controller) => Stack(
+        children: [
+          RefreshIndicator(
+            onRefresh: controller.getIncomes,
+            child: Scaffold(
+              floatingActionButton: FloatingActionButton(
+                onPressed: controller.goAddIncome,
+                child: const Icon(Icons.add),
+              ),
+              appBar: appBarWidget(
+                  leading: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      child: Text('HD'),
+                    ),
+                  ),
+                  text: controller.pointMachineEntity?.pointEntity?.alias ??
+                      emptyString,
+                  actions: [
+                    const IconWidget(
+                      padding: EdgeInsets.only(right: 8),
+                      iconData: Icons.search,
+                    ),
+                  ]),
+              body: SizedBox(
+                height: size.height,
+                width: size.width,
+                child: Column(
+                  children: [
+                    _chooseDates(controller: controller, context: context),
+                    _footer(controller: controller),
+                    (controller.incomes.isEmpty) ? 
+                    const EmptyWidget()
+                    :
+                    _list(
+                      controller: controller,
+                      size: size,
+                    ),
+                  ],
+                ),
               ),
             ),
-            text: controller.pointMachineEntity?.pointEntity?.alias ??
-                emptyString,
-            actions: [
-              const IconWidget(
-                padding: EdgeInsets.only(right: 8),
-                iconData: Icons.search,
-              ),
-            ]),
-        body: SizedBox(
-          height: size.height,
-          width: size.width,
-          child: Column(
-            children: [
-              _chooseDates(controller: controller, context: context),
-              _footer(controller: controller),
-              _list(
-                controller: controller,
-                size: size,
-              ),
-            ],
           ),
-        ),
+          GetBuilder<HomeSlotMachinePointController>(
+            id: validandoIdGet,
+            builder: (_) => LoadingWidget(show: controller.validando)),
+        ],
       ),
     );
   }
@@ -98,17 +112,17 @@ class HomeSlotMachinePointPage extends StatelessWidget {
       children: [
         _footerItem(
           title: 'Ingresos',
-          value: controller.incomesInsert.toString(),
+          value: controller.incomesInsert.formatDecimals(),
           color: infoColor(),
         ),
         _footerItem(
           title: 'Salidas',
-          value: controller.incomesExit.toString(),
+          value: controller.incomesExit.formatDecimals(),
           color: dangerColor(),
         ),
         _footerItem(
           title: 'Ganancia',
-          value: controller.gains.toString(),
+          value: controller.gains.formatDecimals(),
           color: successColor(),
         ),
       ],
@@ -185,11 +199,10 @@ class HomeSlotMachinePointPage extends StatelessWidget {
           child: ListTile(
             title: Row(
               children: [
-                IconWidget(
-                  padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 5),
-                  iconData: (item.typeIncome == 'Ingreso') ? Icons.add : Icons.remove, size: 20,),
                 Text(
-                  'S/ ${item.amount}',
+                  (item.typeIncome == 'Ingreso') ? ' +' : ' -',),
+                Text(
+                  ' S/ ${item.amount.formatDecimals()}',
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ],
@@ -199,16 +212,10 @@ class HomeSlotMachinePointPage extends StatelessWidget {
                 Text(item.date.format(formatDate: 'EEEE d/MM hh:mm a').orEmpty()),
               ],
             ),
-            trailing: CircleAvatar(
-              radius: 15,
-              backgroundColor:
-                  (item.isApproved ?? false) ? successColor() : alertColor(),
-              child: Icon(
-                (item.isApproved ?? false) ? Icons.check : Icons.warning,
-                color: Colors.white,
-                size: 15,
+            trailing: Icon(
+                (item.isApproved ?? false) ? Icons.check_outlined : Icons.warning_outlined,
+                color: (item.isApproved ?? false) ? successColor() : alertColor(),
               ),
-            ),
           ),
         ),
       ),

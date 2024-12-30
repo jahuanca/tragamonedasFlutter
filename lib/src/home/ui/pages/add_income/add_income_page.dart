@@ -53,7 +53,7 @@ class AddIncomePage extends StatelessWidget {
                         InputWidget(
                             enabled: false,
                             hintText: 'Porcentaje:',
-                            initialValue: controller.porcentage.toString(),
+                            initialValue: controller.porcentage?.formatDecimals(),
                             label: 'Porcentaje'),
                         if(controller.typeIncome == controller.typeIncomeInsert)
                         GetBuilder<AddIncomeController>(
@@ -62,7 +62,7 @@ class AddIncomePage extends StatelessWidget {
                               enabled: false,
                               hintText: 'Calculando para la caja',
                               textEditingController:
-                                  TextEditingController(text: controller.forATM.toString()),
+                                  TextEditingController(text: controller.forATM.formatDecimals()),
                               label: 'Para la caja:'),
                         ),
                         if(controller.typeIncome == controller.typeIncomeInsert)
@@ -72,7 +72,7 @@ class AddIncomePage extends StatelessWidget {
                               enabled: false,
                               hintText: 'Porcentaje',
                               textEditingController:
-                                  TextEditingController(text: controller.forClient.toString()),
+                                  TextEditingController(text: controller.forClient.formatDecimals()),
                               label: 'Para el cliente:'),
                         ),
                         if(controller.typeIncome == controller.typeIncomeInsert)
@@ -88,7 +88,6 @@ class AddIncomePage extends StatelessWidget {
                         GetBuilder<AddIncomeController>(
                           id: forClientIdGet,
                           builder: (_) => InputWidget(
-                              enabled: false,
                               hintText: 'Describa la salida de dinero.',
                               isTextArea: true,
                               label: 'Descripción:'),

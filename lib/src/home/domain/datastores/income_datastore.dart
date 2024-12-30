@@ -5,7 +5,9 @@ import 'package:utils/utils.dart';
 
 abstract class IncomeDatastore {
   Future<ResultType<List<String>, ErrorEntity>> getTypesIncome();
-  Future<ResultType<List<IncomeEntity>, ErrorEntity>> getIncomes();
+  Future<ResultType<List<IncomeEntity>, ErrorEntity>> getIncomes({
+    required int idPointMachine,
+  });
   Future<ResultType<IncomeEntity, ErrorEntity>> createIncome(AddIncomeRequest addIncomeRequest);
 
 }

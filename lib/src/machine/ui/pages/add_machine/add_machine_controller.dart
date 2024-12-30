@@ -38,7 +38,11 @@ class AddMachineController extends GetxController {
     ResultType<List<String>, ErrorEntity> resultType =
         await getCurrencyValuesUseCase.execute();
     if (resultType is Success) {
-      currencyValues = resultType.data;
+      List<String> results = resultType.data as List<String>;
+      currencyValues = results;
+      if(results.isNotEmpty){
+        currencyValue = currencyValues.first;
+      }
     } else {
       ErrorEntity errorEntity = resultType.error as ErrorEntity;
       showSnackbarWidget(

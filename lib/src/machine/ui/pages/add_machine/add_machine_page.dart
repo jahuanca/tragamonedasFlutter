@@ -79,6 +79,7 @@ class AddMachinePage extends StatelessWidget {
                       id: currencyValuesIdGet,
                       builder: (_)=> DropdownWidget(
                         label: 'Valor de la moneda',
+                        value: controller.currencyValue,
                         items: controller.currencyValues,
                         onChanged: (value) => controller.onChangeCurrencyValue(value as String),
                       ),

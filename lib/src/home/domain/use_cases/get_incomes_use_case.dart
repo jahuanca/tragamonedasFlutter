@@ -11,8 +11,10 @@ class GetIncomesUseCase {
     required this.repository,
   });
 
-  Future<ResultType<List<IncomeEntity>, ErrorEntity>> execute() async {
-    return repository.getIncomes();
+  Future<ResultType<List<IncomeEntity>, ErrorEntity>> execute({
+    required int idPointMachine,
+  }) async {
+    return repository.getIncomes(idPointMachine: idPointMachine);
   }
 
 }

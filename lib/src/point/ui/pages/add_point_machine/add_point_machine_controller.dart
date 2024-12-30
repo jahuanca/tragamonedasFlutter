@@ -1,4 +1,3 @@
-
 import 'package:get/get.dart';
 import 'package:traga_monedas/src/machine/di/add_machine_binding.dart';
 import 'package:traga_monedas/src/machine/domain/entities/machine_entity.dart';
@@ -22,9 +21,7 @@ class AddPointMachineController extends GetxController {
   MachineEntity? machineSelected;
   double? porcentageSelected;
   PointEntity? pointSelected;
-  String? errorPoint,
-    errorMachine,
-    errorPorcentage;
+  String? errorPoint, errorMachine, errorPorcentage;
   CreatePointMachineUseCase createPointMachineUseCase;
 
   AddPointMachineController({
@@ -43,17 +40,18 @@ class AddPointMachineController extends GetxController {
   void getPoints() async {
     validando = true;
     update([validandoIdGet]);
-    ResultType<List<PointEntity>, ErrorEntity> resultType = await getPointsUseCase.execute();
+    ResultType<List<PointEntity>, ErrorEntity> resultType =
+        await getPointsUseCase.execute();
     validando = false;
     update([validandoIdGet]);
-    if(resultType is Success){
+    if (resultType is Success) {
       List<PointEntity> results = resultType.data as List<PointEntity>;
       points = results;
-    }else {
+    } else {
       ErrorEntity errorEntity = resultType.error as ErrorEntity;
       showSnackbarWidget(
-        context: Get.overlayContext!, 
-        typeSnackbar: TypeSnackbar.error, 
+        context: Get.overlayContext!,
+        typeSnackbar: TypeSnackbar.error,
         message: errorEntity.title,
       );
     }
@@ -63,98 +61,113 @@ class AddPointMachineController extends GetxController {
   void getMachines() async {
     validando = true;
     update([validandoIdGet]);
-    ResultType<List<MachineEntity>, ErrorEntity> resultType = await getMachinesUseCase.execute();
+    ResultType<List<MachineEntity>, ErrorEntity> resultType =
+        await getMachinesUseCase.execute();
     validando = false;
     update([validandoIdGet]);
-    if(resultType is Success){
+    if (resultType is Success) {
       List<MachineEntity> results = resultType.data as List<MachineEntity>;
       machines = results;
-    }else {
+    } else {
       ErrorEntity errorEntity = resultType.error as ErrorEntity;
       showSnackbarWidget(
-        context: Get.overlayContext!, 
-        typeSnackbar: TypeSnackbar.error, 
+        context: Get.overlayContext!,
+        typeSnackbar: TypeSnackbar.error,
         message: errorEntity.title,
       );
     }
     update([machinesIdGet]);
   }
 
-  void onChangeMachine(dynamic id){
-    machineSelected = machines.firstWhereOrNull((e) => e.id == id,);
-    if(machineSelected != null){
+  void onChangeMachine(dynamic id) {
+    machineSelected = machines.firstWhereOrNull(
+      (e) => e.id == id,
+    );
+    if (machineSelected != null) {
       errorMachine = null;
-    }else{
+    } else {
       errorMachine = 'Maquina es requerida';
       machineSelected = null;
     }
   }
 
-  void onChangePoint(dynamic id){
-    pointSelected = points.firstWhereOrNull((e) => e.id == id,);
+  void onChangePoint(dynamic id) {
+    pointSelected = points.firstWhereOrNull(
+      (e) => e.id == id,
+    );
     porcentageSelected = pointSelected?.porcentage;
-    if(pointSelected != null){
+    if (pointSelected != null) {
       errorPoint = null;
-    }else{
+    } else {
       errorPoint = 'Maquina es requerida';
       pointSelected = null;
     }
     update([porcentageIdGet]);
   }
 
-  String? validar(){
+  String? validar() {
     onChangeMachine(machineSelected?.id);
     onChangePoint(pointSelected?.id);
     return [
       errorPorcentage,
       errorMachine,
       errorPoint,
-    ].firstWhereOrNull((e) => e!= null,);
+    ].firstWhereOrNull(
+      (e) => e != null,
+    );
   }
 
   void createPointMachine() async {
     String? message = validar();
-    if(message != null){
+    if (message != null) {
       showSnackbarWidget(
-        context: Get.overlayContext!, 
-        typeSnackbar: TypeSnackbar.error, 
-        message: message
-      );
+          context: Get.overlayContext!,
+          typeSnackbar: TypeSnackbar.error,
+          message: message);
       return;
     }
     validando = true;
     update([validandoIdGet]);
-    ResultType<PointMachineEntity, ErrorEntity> resultType = await createPointMachineUseCase.execute(
+    ResultType<PointMachineEntity, ErrorEntity> resultType =
+        await createPointMachineUseCase.execute(
       pointMachineEntity: PointMachineEntity(
-        idPoint: pointSelected!.id!, 
-        idMachine: machineSelected!.id!, 
+        idPoint: pointSelected!.id!,
+        idMachine: machineSelected!.id!,
         porcentage: porcentageSelected!,
-        ),
-      );
-    if(resultType is Success){
-      PointMachineEntity pointMachineEntity = resultType.data as PointMachineEntity;
+      ),
+    );
+    validando = false;
+    update([validandoIdGet]);
+    if (resultType is Success) {
+      PointMachineEntity pointMachineEntity =
+          resultType.data as PointMachineEntity;
       Get.back(
-        result: pointMachineEntity, 
+        result: pointMachineEntity,
       );
-    }else{
+    } else {
       ErrorEntity errorEntity = resultType.error as ErrorEntity;
-      showSnackbarWidget(
-        context: Get.overlayContext!, 
-        typeSnackbar: TypeSnackbar.error, 
+      await showSnackbarWidget(
+        context: Get.context!,
+        typeSnackbar: TypeSnackbar.error,
         message: errorEntity.title,
       );
     }
-    validando = false;
-    update([validandoIdGet]);
-
   }
 
-  void goAddPoint(){
-    Get.to(()=> const AddPointPage(), binding: AddPointBinding());
+  void goAddPoint() async {
+    PointEntity? result = await Get.to<PointEntity?>(() => const AddPointPage(),
+        binding: AddPointBinding());
+    if (result != null) {
+      getPoints();
+    }
   }
 
-  void goAddMachine(){
-    Get.to(()=> const AddMachinePage(), binding: AddMachineBinding());
+  void goAddMachine() async {
+    MachineEntity? result = await Get.to<MachineEntity?>(
+        () => const AddMachinePage(),
+        binding: AddMachineBinding());
+    if (result != null) {
+      getMachines();
+    }
   }
-
 }
