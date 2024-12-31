@@ -47,6 +47,8 @@ class PointEntity {
     this.createdAt,
     this.updatedAt,
   });
+  
+  String get aliasAndName => '$alias: $firstName';
 
   Map<String, dynamic> toJson() => {
         _idKey: id,

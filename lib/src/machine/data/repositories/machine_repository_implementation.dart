@@ -1,6 +1,7 @@
 import 'package:traga_monedas/src/machine/domain/datastores/machine_datastore.dart';
 import 'package:traga_monedas/src/machine/domain/entities/machine_entity.dart';
 import 'package:traga_monedas/src/machine/domain/repositories/machine_repository.dart';
+import 'package:traga_monedas/src/point/data/requests/machine/machine_request.dart';
 import 'package:utils/utils.dart';
 
 class MachineRepositoryImplementation extends MachineRepository {
@@ -20,6 +21,8 @@ class MachineRepositoryImplementation extends MachineRepository {
       datastore.getCurrencyValues();
 
   @override
-  Future<ResultType<List<MachineEntity>, ErrorEntity>> getMachines() =>
-      datastore.getMachines();
+  Future<ResultType<List<MachineEntity>, ErrorEntity>> getMachines({
+    required MachineRequest machineRequest,
+  }) =>
+      datastore.getMachines(machineRequest: machineRequest);
 }

@@ -1,3 +1,4 @@
+import 'package:traga_monedas/src/point/data/requests/point_request.dart';
 import 'package:traga_monedas/src/point/domain/datastores/point_datastore.dart';
 import 'package:traga_monedas/src/point/domain/entities/point_entity.dart';
 import 'package:traga_monedas/src/point/domain/entities/point_machine_entity.dart';
@@ -17,8 +18,10 @@ class PointRepositoryImplementation extends PointRepository {
       datastore.createPoint(pointEntity: pointEntity);
 
   @override
-  Future<ResultType<List<PointEntity>, ErrorEntity>> getPoints() =>
-      datastore.getPoints();
+  Future<ResultType<List<PointEntity>, ErrorEntity>> getPoints({
+    required PointRequest pointRequest,
+  }) =>
+      datastore.getPoints(pointRequest: pointRequest);
 
   @override
   Future<ResultType<PointMachineEntity, ErrorEntity>> createPointMachine({required PointMachineEntity pointMachineEntity}) {

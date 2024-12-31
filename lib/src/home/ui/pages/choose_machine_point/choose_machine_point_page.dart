@@ -30,7 +30,7 @@ class ChooseSlotMachinePointPage extends StatelessWidget {
                   FloatingActionButton(
                     heroTag: 'goAnalyticsAll',
                     backgroundColor: primaryColor(),
-                    onPressed: controller.goAddPointMachine,
+                    onPressed: controller.goToContentAllSlot,
                     child: const Icon(Icons.analytics, color: Colors.white,),
                   ),
                   if(controller.pointsMachine.isNotEmpty)
@@ -105,7 +105,7 @@ class ChooseSlotMachinePointPage extends StatelessWidget {
     required ChooseSlotMachinePointController controller,
   }) {
     return ItemListImageDataWidget(
-      onTap: () => controller.goToContentSlotMachinePoint(item),
+      onTap: () => controller.goToContentSlot(item),
       cardElevation: 5,
       decorationAll: BoxDecoration(
           border: Border.all(color: primaryColor()),
@@ -117,7 +117,7 @@ class ChooseSlotMachinePointPage extends StatelessWidget {
       path: 'assets/icons/icon_slot_machine.png',
       storageType: StorageType.localStorage,
       title: item.pointEntity?.alias ?? emptyString,
-      subtitle: item.pointEntity?.address ?? emptyString,
+      subtitle: item.pointEntity?.firstName,
       detail: '${item.porcentage.formatDecimals()}%',
     );
   }

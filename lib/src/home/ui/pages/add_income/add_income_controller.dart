@@ -13,9 +13,10 @@ class AddIncomeController extends GetxController {
   double forClient = defaultDouble;
   double forATM = defaultDouble;
 
-  double? porcentage;
+  late double porcentage;
   bool? withPayForClient;
   double? amount;
+  DateTime? date;
   String? description;
   String typeIncome = 'Ingreso de dinero';
 
@@ -25,14 +26,12 @@ class AddIncomeController extends GetxController {
   List<String> typesIncome = [];
   String typeIncomeInsert = 'Ingreso';
   bool validando = false;
-  String? errorAmount, errorTypeIncome, errorDescription;
+  String? errorAmount, errorTypeIncome, errorDescription, errorDate;
 
   AddIncomeController({
     required this.getTypesIncomeUseCase,
     required this.createIncomeUseCase,
   });
-
-  //todo: al final que backend se encargue de crear dos en caso de que el pago del cliente este en true.
 
   @override
   void onInit() {
@@ -48,6 +47,7 @@ class AddIncomeController extends GetxController {
   @override
   void onReady() {
     getTypesIncome();
+    onChangeDate(DateTime.now());
     super.onReady();
   }
 
@@ -73,6 +73,17 @@ class AddIncomeController extends GetxController {
     update([validandoIdGet]);
   }
 
+  void onChangeDate(DateTime? value){
+    ValidateResult resultType = validateText(
+      text: value?.toString(), label: 'Fecha');
+    if(resultType.hasError){
+      errorDate = resultType.error;
+    }else{
+      date = DateTime.tryParse(resultType.value.orEmpty());
+    }
+    update([dateIdGet]);
+  }
+
   void onChangeMonto(String value) {
     ValidateResult result = validateText(rules: {
       RuleValidator.isRequired: true,
@@ -82,8 +93,8 @@ class AddIncomeController extends GetxController {
     if (result.error == null) {
       amount = double.parse(value);
       errorAmount = null;
-      forClient = amount.orZero() * 0.25;
-      forATM = amount.orZero() * 0.75;
+      forClient = amount.orZero() * (porcentage.orZero())/100;
+      forATM = amount.orZero() * (100 - porcentage.orZero())/100;
     } else {
       errorAmount = result.error;
       amount = null;

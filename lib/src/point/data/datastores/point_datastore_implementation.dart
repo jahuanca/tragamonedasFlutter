@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:traga_monedas/src/point/data/requests/point_request.dart';
 import 'package:traga_monedas/src/point/domain/datastores/point_datastore.dart';
 import 'package:traga_monedas/src/point/domain/entities/point_entity.dart';
 import 'package:traga_monedas/src/point/domain/entities/point_machine_entity.dart';
@@ -25,9 +26,11 @@ class PointDatastoreImplementation extends PointDatastore {
   }
 
   @override
-  Future<ResultType<List<PointEntity>, ErrorEntity>> getPoints() async {
+  Future<ResultType<List<PointEntity>, ErrorEntity>> getPoints({
+    required PointRequest pointRequest,
+  }) async {
     AppHttpManager appHttpManager = AppHttpManager();
-    AppResponseHttp appResponseHttp = await appHttpManager.get(url: '/point/');
+    AppResponseHttp appResponseHttp = await appHttpManager.get(url: '/point', query: pointRequest.toJson());
     if (appResponseHttp.isSuccessful) {
       return Success(data: pointEntityFromJsonList(appResponseHttp.body));
     } else {

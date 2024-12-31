@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:traga_monedas/src/home/data/requests/point_machine_request.dart';
 import 'package:traga_monedas/src/home/di/add_income_binding.dart';
 import 'package:traga_monedas/src/home/domain/entities/income_entity.dart';
 import 'package:traga_monedas/src/home/domain/use_cases/get_incomes_use_case.dart';
@@ -7,7 +8,7 @@ import 'package:traga_monedas/src/point/domain/entities/point_machine_entity.dar
 import 'package:traga_monedas/src/utils/ui/arguments.dart';
 import 'package:utils/utils.dart';
 
-class HomeSlotMachinePointController extends GetxController {
+class HomeSlotController extends GetxController {
   DateTime? initialDay;
   DateTime? finalDay;
   PointMachineEntity? pointMachineEntity;
@@ -15,7 +16,7 @@ class HomeSlotMachinePointController extends GetxController {
   List<IncomeEntity> incomes = [];
   bool validando = false;
 
-  HomeSlotMachinePointController({
+  HomeSlotController({
     required this.getIncomesUseCase,
   });
 
@@ -58,7 +59,7 @@ class HomeSlotMachinePointController extends GetxController {
     validando = true;
     update([validandoIdGet]);
     ResultType<List<IncomeEntity>, ErrorEntity> resultType = await getIncomesUseCase.execute(
-      idPointMachine: pointMachineEntity?.id ?? defaultInt
+      pointMachineRequest: PointMachineRequest(idPointMachine: pointMachineEntity?.id)
     );
     if(resultType is Success){
       List<IncomeEntity> results = resultType.data;

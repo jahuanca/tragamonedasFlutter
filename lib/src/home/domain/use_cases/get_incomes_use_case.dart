@@ -1,4 +1,5 @@
 
+import 'package:traga_monedas/src/home/data/requests/point_machine_request.dart';
 import 'package:traga_monedas/src/home/domain/entities/income_entity.dart';
 import 'package:traga_monedas/src/home/domain/repositories/income_repository.dart';
 import 'package:utils/utils.dart';
@@ -12,9 +13,9 @@ class GetIncomesUseCase {
   });
 
   Future<ResultType<List<IncomeEntity>, ErrorEntity>> execute({
-    required int idPointMachine,
+    required PointMachineRequest pointMachineRequest,
   }) async {
-    return repository.getIncomes(idPointMachine: idPointMachine);
+    return repository.getIncomes(pointMachineRequest: pointMachineRequest);
   }
 
 }

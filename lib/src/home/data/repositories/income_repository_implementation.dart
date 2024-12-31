@@ -1,4 +1,5 @@
 import 'package:traga_monedas/src/home/data/requests/add_income_request.dart';
+import 'package:traga_monedas/src/home/data/requests/point_machine_request.dart';
 import 'package:traga_monedas/src/home/domain/datastores/income_datastore.dart';
 import 'package:traga_monedas/src/home/domain/entities/income_entity.dart';
 import 'package:traga_monedas/src/home/domain/repositories/income_repository.dart';
@@ -24,8 +25,8 @@ class IncomeRepositoryImplementation extends IncomeRepository {
 
   @override
   Future<ResultType<List<IncomeEntity>, ErrorEntity>> getIncomes({
-    required int idPointMachine,
+    required PointMachineRequest pointMachineRequest,
   }) {
-    return datastore.getIncomes(idPointMachine: idPointMachine);
+    return datastore.getIncomes(pointMachineRequest: pointMachineRequest);
   }
 }

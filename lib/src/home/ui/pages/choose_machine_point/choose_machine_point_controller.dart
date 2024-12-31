@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
-import 'package:traga_monedas/src/home/di/home_slot_machine_point_binding.dart';
-import 'package:traga_monedas/src/home/ui/pages/home_slot_machine_point/home_slot_machine_point_page.dart';
+import 'package:traga_monedas/src/home/di/home_all_slot_binding.dart';
+import 'package:traga_monedas/src/home/di/home_slot_binding.dart';
+import 'package:traga_monedas/src/home/ui/pages/home_all_slot/home_all_slot_page.dart';
+import 'package:traga_monedas/src/home/ui/pages/home_slot/home_slot_page.dart';
 import 'package:traga_monedas/src/point/di/add_point_machine_binding.dart';
 import 'package:traga_monedas/src/point/domain/entities/point_machine_entity.dart';
 import 'package:traga_monedas/src/point/domain/use_cases/get_points_machine_use_case.dart';
@@ -54,13 +56,20 @@ class ChooseSlotMachinePointController extends GetxController {
     }
   }
 
-  void goToContentSlotMachinePoint(PointMachineEntity pointMachineSelected) {
+  void goToContentSlot(PointMachineEntity pointMachineSelected) {
     Get.to(
-      () => const HomeSlotMachinePointPage(),
+      () => const HomeSlotPage(),
       arguments: {
         pointMachineSelectedArgument: pointMachineSelected,
       },
-      binding: HomeSlotMachinePointBinding(),
+      binding: HomeSlotBinding(),
+    );
+  }
+
+  void goToContentAllSlot() {
+    Get.to(
+      () => const HomeAllSlotPage(),
+      binding: HomeAllSlotBinding(),
     );
   }
 }

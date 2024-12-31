@@ -39,12 +39,14 @@ class AddPointPage extends StatelessWidget {
                         id: phoneNumberIdGet,
                         builder: (_) => InputWidget(
                           maxLength: 9,
+                          textInputType: TextInputType.phone,
                           onChanged: controller.onChangedPhoneNumber,
                             label: 'Teléfono',
                             hintText: 'Ingrese el teléfono')),
                     GetBuilder<AddPointControlller>(
                         id: emailIdGet,
                         builder: (_) => InputWidget(
+                          textInputType: TextInputType.emailAddress,
                           onChanged: controller.onChangedEmail,
                             label: 'Correo electronico',
                             hintText: 'Ingrese el correo electronico')),

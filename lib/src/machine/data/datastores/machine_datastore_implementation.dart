@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:traga_monedas/src/machine/domain/datastores/machine_datastore.dart';
 import 'package:traga_monedas/src/machine/domain/entities/machine_entity.dart';
+import 'package:traga_monedas/src/point/data/requests/machine/machine_request.dart';
 import 'package:utils/utils.dart';
 
 class MachineDatastoreImplementation extends MachineDatastore {
@@ -47,10 +48,13 @@ class MachineDatastoreImplementation extends MachineDatastore {
   }
 
   @override
-  Future<ResultType<List<MachineEntity>, ErrorEntity>> getMachines() async {
+  Future<ResultType<List<MachineEntity>, ErrorEntity>> getMachines({
+    required MachineRequest machineRequest,
+  }) async {
     AppHttpManager appHttpManager = AppHttpManager();
 
-    AppResponseHttp appResponseHttp = await appHttpManager.get(url: '/machine');
+    AppResponseHttp appResponseHttp = await appHttpManager.get(
+        url: '/machine', query: machineRequest.toJson());
     if (appResponseHttp.isSuccessful) {
       return Success(data: machineEntityFromJson(appResponseHttp.body));
     } else {

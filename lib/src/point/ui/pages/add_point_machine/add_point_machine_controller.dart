@@ -3,6 +3,8 @@ import 'package:traga_monedas/src/machine/di/add_machine_binding.dart';
 import 'package:traga_monedas/src/machine/domain/entities/machine_entity.dart';
 import 'package:traga_monedas/src/machine/domain/use_cases/get_machines_use_case.dart';
 import 'package:traga_monedas/src/machine/ui/pages/add_machine/add_machine_page.dart';
+import 'package:traga_monedas/src/point/data/requests/machine/machine_request.dart';
+import 'package:traga_monedas/src/point/data/requests/point_request.dart';
 import 'package:traga_monedas/src/point/di/add_point_binding.dart';
 import 'package:traga_monedas/src/point/domain/entities/point_entity.dart';
 import 'package:traga_monedas/src/point/domain/entities/point_machine_entity.dart';
@@ -41,7 +43,10 @@ class AddPointMachineController extends GetxController {
     validando = true;
     update([validandoIdGet]);
     ResultType<List<PointEntity>, ErrorEntity> resultType =
-        await getPointsUseCase.execute();
+        await getPointsUseCase.execute(
+            pointRequest: PointRequest(
+      hasPointMachine: false,
+    ));
     validando = false;
     update([validandoIdGet]);
     if (resultType is Success) {
@@ -62,7 +67,10 @@ class AddPointMachineController extends GetxController {
     validando = true;
     update([validandoIdGet]);
     ResultType<List<MachineEntity>, ErrorEntity> resultType =
-        await getMachinesUseCase.execute();
+        await getMachinesUseCase.execute(
+            machineRequest: MachineRequest(
+      hasPointMachine: false,
+    ));
     validando = false;
     update([validandoIdGet]);
     if (resultType is Success) {
