@@ -6,6 +6,7 @@ const _descriptionKey = 'description';
 const _withPayForClientKey = 'withPayForClient';
 const _idPointMachineKey = 'idPointMachine';
 const _payForClientKey = 'payForClient';
+const _dateKey = 'date';
 
 class AddIncomeRequest {
 
@@ -16,8 +17,10 @@ class AddIncomeRequest {
   double? payForClient;
   String? description;
   int idPointMachine;
+  DateTime date;
 
   AddIncomeRequest({
+    required this.date,
     required this.typeIncome,
     required this.amount,
     required this.porcentage,
@@ -34,6 +37,7 @@ class AddIncomeRequest {
     _descriptionKey: description,
     _withPayForClientKey: withPayForClient,
     _idPointMachineKey: idPointMachine,
+    _dateKey: date.toIso8601String(),
     _payForClientKey: payForClient,
   };
 
@@ -45,6 +49,7 @@ class AddIncomeRequest {
     withPayForClient: json[_withPayForClientKey],
     idPointMachine: json[_idPointMachineKey],
     payForClient: json[_payForClientKey],
+    date: DateTime.parse(json[_dateKey]),
   );
 
 }

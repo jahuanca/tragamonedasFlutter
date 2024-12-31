@@ -72,11 +72,18 @@ class HomeAllSlotPage extends StatelessWidget {
         horizontal: 20,
       ),
       child: GestureDetector(
-        onTap: () => showDateRangePicker(
-            firstDate: DateTime.now(),
-            lastDate: DateTime.now().add(const Duration(days: 7)),
+        onTap: () async {
+          DateTimeRange? range = await showDateRangePicker(
+            firstDate: DateTime.now().subtract(const Duration(days: 180)),
+            initialDateRange: DateTimeRange(
+                start: controller.initialDay.orNow(), 
+                end: controller.finalDay.orNow(), 
+              ),
+            lastDate: DateTime.now().add(const Duration(days: 10)),
             context: context,
-            initialEntryMode: DatePickerEntryMode.calendar),
+            initialEntryMode: DatePickerEntryMode.calendar);
+            controller.onChangeRange(range);
+        },
         child: Row(
           children: [
             const Icon(Icons.date_range_outlined),

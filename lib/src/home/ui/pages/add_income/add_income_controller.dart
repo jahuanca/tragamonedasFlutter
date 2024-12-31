@@ -39,6 +39,7 @@ class AddIncomeController extends GetxController {
       if (Get.arguments[pointMachineArgument] != null) {
         pointMachineEntity = Get.arguments[pointMachineArgument];
         porcentage = pointMachineEntity?.porcentage ?? defaultDouble;
+        withPayForClient = !(pointMachineEntity?.pointEntity?.payWeekly ?? false);
       }
     }
     super.onInit();
@@ -47,7 +48,7 @@ class AddIncomeController extends GetxController {
   @override
   void onReady() {
     getTypesIncome();
-    onChangeDate(DateTime.now());
+    onChangeDate(defaultDate);
     super.onReady();
   }
 
@@ -164,6 +165,7 @@ class AddIncomeController extends GetxController {
     ResultType<IncomeEntity, ErrorEntity> resultType =
         await createIncomeUseCase.execute(AddIncomeRequest(
             typeIncome: typeIncome,
+            date: date.orNow(),
             amount: amount.orZero(),
             porcentage: porcentage.orZero(),
             withPayForClient: withPayForClient,

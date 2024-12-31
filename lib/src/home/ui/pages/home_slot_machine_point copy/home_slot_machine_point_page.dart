@@ -84,7 +84,7 @@ class HomeSlotMachinePointPage extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () => showDateRangePicker(
-            firstDate: DateTime.now(),
+            firstDate: defaultDate,
             lastDate: DateTime.now().add(const Duration(days: 7)),
             context: context,
             initialEntryMode: DatePickerEntryMode.calendar),

@@ -38,10 +38,10 @@ class AddIncomePage extends StatelessWidget {
                         onTap: () async {
                           DateTime? selectedDate = await showDatePicker(
                             context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now()
+                            initialDate: controller.date ?? defaultDate,
+                            firstDate: defaultDate
                                 .subtract(const Duration(days: 180)),
-                            lastDate: DateTime.now(),
+                            lastDate: defaultDate,
                           );
                           if (selectedDate != null) {
                             controller.onChangeDate(selectedDate);
@@ -116,8 +116,7 @@ class AddIncomePage extends StatelessWidget {
                     ButtonWidget(
                         elevation: 5,
                         onTap: controller.createIncome,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 25),
+                        padding: const EdgeInsets.symmetric(vertical: 25),
                         text: 'Ingresar')
                   ],
                 ),

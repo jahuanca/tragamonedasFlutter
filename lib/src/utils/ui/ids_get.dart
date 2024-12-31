@@ -12,6 +12,7 @@ const String montoIdGet = 'montoIdGet';
 const String nameIdGet = 'nameIdGet';
 const String observationIdGet = 'observationIdGet';
 const String passwordIdGet = 'passwordIdGet';
+const String payWeeklyIdGet = 'payWeeklyIdGet';
 const String phoneNumberIdGet = 'phoneNumberIdGet';
 const String pointsIdGet = 'pointsIdGet';
 const String pointsMachineIdGet = 'pointsMachineIdGet';

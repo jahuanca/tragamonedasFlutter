@@ -22,6 +22,7 @@ class AddPointControlller extends GetxController {
     porcentage,
     alias,
     address;
+  bool? payWeekly;
 
   final  CreatePointUseCase createPointUseCase;
 
@@ -64,6 +65,11 @@ class AddPointControlller extends GetxController {
     errorPorcentage = validatePorcentage.error;
     porcentage = validatePorcentage.value;
     update([porcentageIdGet]);
+  }
+
+  void onChangePayWeekly(bool? value){
+    payWeekly = value;
+    update([payWeeklyIdGet]);
   }
 
   void onChangedAlias(String value){
@@ -116,6 +122,7 @@ class AddPointControlller extends GetxController {
         address: address.orEmpty(), 
         phoneNumber: phoneNumber.orEmpty(), 
         email: email.orEmpty(), 
+        payWeekly: payWeekly.orFalse(),
         porcentage: double.parse(porcentage.orEmpty()),
       )
     );

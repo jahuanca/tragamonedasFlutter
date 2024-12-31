@@ -50,7 +50,7 @@ class IncomeDatastoreImplementation extends IncomeDatastore {
 
   @override
   Future<ResultType<List<IncomeEntity>, ErrorEntity>> getIncomes({
-    required PointMachineRequest pointMachineRequest,
+    required IncomeRequest pointMachineRequest,
   }) async {
     AppHttpManager appHttpManager = AppHttpManager();
     AppResponseHttp appResponseHttp =

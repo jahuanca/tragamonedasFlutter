@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:traga_monedas/src/home/data/requests/point_machine_request.dart';
 import 'package:traga_monedas/src/home/di/add_income_binding.dart';
@@ -32,9 +33,9 @@ class HomeAllSlotController extends GetxController {
   @override
   void onInit() {
     initialDay =
-        DateTime.now().subtract(Duration(days: (DateTime.now().weekday - 1)));
+        DateTime.now().subtract(Duration(days: (defaultDate.weekday - 1)));
     finalDay = DateTime.now()
-        .add(Duration(days: DateTime.daysPerWeek - DateTime.now().weekday));
+        .add(Duration(days: DateTime.daysPerWeek - defaultDate.weekday));
     update([pageIdGet]);
     super.onInit();
   }
@@ -45,11 +46,22 @@ class HomeAllSlotController extends GetxController {
     super.onReady();
   }
 
+  void onChangeRange(DateTimeRange? range){
+    if(range != null){
+      initialDay = range.start;
+      finalDay = range.end;
+      getIncomes();
+    }
+  }
+
   Future<void> getIncomes() async {
     validando = true;
     update([validandoIdGet]);
     ResultType<List<IncomeEntity>, ErrorEntity> resultType = await getIncomesUseCase.execute(
-      pointMachineRequest: PointMachineRequest()
+      pointMachineRequest: IncomeRequest(
+        firstDate: initialDay.orNow(),
+        lastDate: finalDay.orNow(),
+      )
     );
     if(resultType is Success){
       List<IncomeEntity> results = resultType.data;

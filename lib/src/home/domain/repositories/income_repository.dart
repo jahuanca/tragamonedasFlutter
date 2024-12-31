@@ -7,7 +7,7 @@ abstract class IncomeRepository {
 
   Future<ResultType<List<String>, ErrorEntity>> getTypesIncome();
   Future<ResultType<List<IncomeEntity>, ErrorEntity>> getIncomes({
-    required PointMachineRequest pointMachineRequest,
+    required IncomeRequest pointMachineRequest,
   });
   Future<ResultType<IncomeEntity, ErrorEntity>> createIncome(AddIncomeRequest addIncomeRequest);
   

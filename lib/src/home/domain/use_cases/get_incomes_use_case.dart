@@ -13,7 +13,7 @@ class GetIncomesUseCase {
   });
 
   Future<ResultType<List<IncomeEntity>, ErrorEntity>> execute({
-    required PointMachineRequest pointMachineRequest,
+    required IncomeRequest pointMachineRequest,
   }) async {
     return repository.getIncomes(pointMachineRequest: pointMachineRequest);
   }

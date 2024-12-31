@@ -15,6 +15,7 @@ const _latitudeKey = 'latitude';
 const _longitudeKey = 'longitude';
 const _phoneNumberKey = 'phoneNumber';
 const _emailKey = 'email';
+const _payWeeklyKey = 'payWeekly';
 const _porcentageKey = 'porcentage';
 const _createdAtKey = 'createdAt';
 const _updatedAtKey = 'updatedAt';
@@ -30,6 +31,7 @@ class PointEntity {
   String phoneNumber;
   String email;
   double porcentage;
+  bool payWeekly;
   DateTime? createdAt;
   DateTime? updatedAt;
 
@@ -46,6 +48,7 @@ class PointEntity {
     required this.porcentage,
     this.createdAt,
     this.updatedAt,
+    required this.payWeekly,
   });
   
   String get aliasAndName => '$alias: $firstName';
@@ -60,6 +63,7 @@ class PointEntity {
         _longitudeKey: longitude,
         _phoneNumberKey: phoneNumber,
         _emailKey: email,
+        _payWeeklyKey: payWeekly,
         _porcentageKey: porcentage,
         _createdAtKey: createdAt?.toIso8601String(),
         _updatedAtKey: updatedAt?.toIso8601String(),
@@ -73,6 +77,7 @@ class PointEntity {
         address: json[_addressKey],
         phoneNumber: json[_phoneNumberKey],
         email: json[_emailKey],
+        payWeekly: json[_payWeeklyKey],
         porcentage: (json[_porcentageKey] as num).toDouble(),
         latitude: json[_latitudeKey],
         longitude: json[_longitudeKey],

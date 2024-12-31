@@ -33,6 +33,7 @@ class AddMachinePage extends StatelessWidget {
                         error: controller.errorName,
                         onChanged: controller.onChangedName,
                         label: 'Nombre',
+                        maxLength: 50,
                         hintText: 'Ingrese el nombre',
                       ),
                     ),
@@ -64,10 +65,10 @@ class AddMachinePage extends StatelessWidget {
                         onTap: () async {
                           DateTime? selectedDate = await showDatePicker(
                             context: context,
-                            initialDate: DateTime.now(),
+                            initialDate: defaultDate,
                             firstDate: DateTime.now()
                                 .subtract(const Duration(days: 180)),
-                            lastDate: DateTime.now(),
+                            lastDate: defaultDate,
                           );
                           if (selectedDate != null) {
                             controller.onChangedPurchaseDate(selectedDate);
