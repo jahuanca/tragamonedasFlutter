@@ -26,18 +26,15 @@ class HomeSlotPage extends StatelessWidget {
                 child: const Icon(Icons.add),
               ),
               appBar: appBarWidget(
-                  leading: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: CircleAvatar(
-                      child: Text('HD'),
-                    ),
-                  ),
+                  hasArrowBack: true,
                   text: controller.pointMachineEntity?.pointEntity?.alias ??
                       emptyString,
                   actions: [
-                    const IconWidget(
-                      padding: EdgeInsets.only(right: 8),
-                      iconData: Icons.search,
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: CircleAvatar(
+                        child: Text('HD'),
+                      ),
                     ),
                   ]),
               body: SizedBox(
@@ -68,6 +65,22 @@ class HomeSlotPage extends StatelessWidget {
     );
   }
 
+  Future<void> onTapDateTime({
+    required HomeSlotController controller,
+    required BuildContext context,
+  }) async {
+    DateTimeRange? range = await showDateRangePicker(
+        firstDate: DateTime.now().subtract(const Duration(days: 180)),
+        initialDateRange: DateTimeRange(
+          start: controller.initialDay.orNow(),
+          end: controller.finalDay.orNow(),
+        ),
+        lastDate: DateTime.now().add(const Duration(days: 10)),
+        context: context,
+        initialEntryMode: DatePickerEntryMode.calendar);
+    controller.onChangeRange(range);
+  }
+
   Widget _chooseDates({
     required BuildContext context,
     required HomeSlotController controller,
@@ -81,33 +94,32 @@ class HomeSlotPage extends StatelessWidget {
         vertical: 15,
         horizontal: 20,
       ),
-      child: GestureDetector(
-        onTap: () async {
-          DateTimeRange? range = await showDateRangePicker(
-            firstDate: DateTime.now().subtract(const Duration(days: 180)),
-            initialDateRange: DateTimeRange(
-                start: controller.initialDay.orNow(), 
-                end: controller.finalDay.orNow(), 
+      child: Row(
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: () =>
+                  onTapDateTime(context: context, controller: controller),
+              child: Row(
+                children: [
+                  const Icon(Icons.date_range_outlined),
+                  Expanded(
+                      child: Text(
+                    rangeDateString,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.center,
+                  )),
+                ],
               ),
-            lastDate: DateTime.now().add(const Duration(days: 10)),
-            context: context,
-            initialEntryMode: DatePickerEntryMode.calendar);
-            controller.onChangeRange(range);
-        },
-        child: Row(
-          children: [
-            const Icon(Icons.date_range_outlined),
-            Expanded(
-                child: Text(
-              rangeDateString,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
-              textAlign: TextAlign.center,
-            ))
-          ],
-        ),
+            ),
+          ),
+          const IconWidget(
+            iconData: Icons.search,
+          ),
+        ],
       ),
     );
   }
@@ -217,12 +229,12 @@ class HomeSlotPage extends StatelessWidget {
                     .orEmpty()),
               ],
             ),
-            trailing: Icon(
-              (item.isApproved ?? false)
-                  ? Icons.check_outlined
-                  : Icons.warning_outlined,
-              color: (item.isApproved ?? false) ? successColor() : alertColor(),
-            ),
+            trailing: (item.isApproved == false)
+                ? Icon(
+                    Icons.warning_outlined,
+                    color: alertColor(),
+                  )
+                : null,
           ),
         ),
       ),

@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
 import 'package:traga_monedas/src/home/data/requests/auth_request.dart';
+import 'package:traga_monedas/src/home/di/main_binding.dart';
 import 'package:traga_monedas/src/home/domain/entities/user_entity.dart';
 import 'package:traga_monedas/src/home/domain/use_cases/login_use_case.dart';
-import 'package:traga_monedas/src/home/ui/pages/choose_machine_point/choose_machine_point_page.dart';
+import 'package:traga_monedas/src/home/ui/pages/main/main_page.dart';
 import 'package:traga_monedas/src/utils/core/data_local.dart';
 import 'package:traga_monedas/src/utils/ui/ids_get.dart';
 import 'package:utils/utils.dart';
@@ -18,8 +19,8 @@ class LoginController extends GetxController {
     required this.loginUseCase,
   });
 
-  void _goToChooseSlotMachines() {
-    Get.to(() => const ChooseSlotMachinePointPage());
+  void _goToMainContent() {
+    Get.to(() => MainPage(), binding: MainBinding());
   }
 
   void onChangedEmail(String value){
@@ -74,7 +75,7 @@ class LoginController extends GetxController {
           authRequest: AuthRequest(email: email.orEmpty(), password: password.orEmpty()));
     if(resultType is Success){
       DataLocal.setLogged(true);
-      _goToChooseSlotMachines();
+      _goToMainContent();
     }else{ 
 
     }

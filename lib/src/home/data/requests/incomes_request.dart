@@ -1,15 +1,18 @@
 const _idPointMachineKey = 'idPointMachine';
 const _firstDateKey = 'firstDate';
 const _lastDateKey = 'lastDate';
+const _includeModelsKey = 'includeModels';
 
-class IncomeRequest {
+class IncomesRequest {
   int? idPointMachine;
   DateTime firstDate;
+  bool includeModels;
   DateTime lastDate;
 
-  IncomeRequest({
+  IncomesRequest({
     required this.firstDate,
     required this.lastDate,
+    required this.includeModels,
     this.idPointMachine,
   });
 
@@ -17,11 +20,13 @@ class IncomeRequest {
         _firstDateKey: firstDate,
         _lastDateKey: lastDate,
         _idPointMachineKey: idPointMachine,
+        _includeModelsKey: includeModels,
       };
 
-  factory IncomeRequest.fromJson(Map<String, dynamic> json) =>
-      IncomeRequest(
+  factory IncomesRequest.fromJson(Map<String, dynamic> json) =>
+      IncomesRequest(
         firstDate: json[_firstDateKey],
         lastDate: json[_lastDateKey],
+        includeModels: json[_includeModelsKey],
         idPointMachine: json[_idPointMachineKey]);
 }

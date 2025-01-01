@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:traga_monedas/src/home/data/requests/point_machine_request.dart';
+import 'package:traga_monedas/src/home/data/requests/incomes_request.dart';
 import 'package:traga_monedas/src/home/di/add_income_binding.dart';
 import 'package:traga_monedas/src/home/domain/entities/income_entity.dart';
 import 'package:traga_monedas/src/home/domain/use_cases/get_incomes_use_case.dart';
@@ -58,7 +58,8 @@ class HomeAllSlotController extends GetxController {
     validando = true;
     update([validandoIdGet]);
     ResultType<List<IncomeEntity>, ErrorEntity> resultType = await getIncomesUseCase.execute(
-      pointMachineRequest: IncomeRequest(
+      pointMachineRequest: IncomesRequest(
+        includeModels: true,
         firstDate: initialDay.orNow(),
         lastDate: finalDay.orNow(),
       )

@@ -10,8 +10,7 @@ class HomeAllSlotPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HomeAllSlotController controller =
-        Get.find<HomeAllSlotController>();
+    final HomeAllSlotController controller = Get.find<HomeAllSlotController>();
     final Size size = MediaQuery.of(context).size;
 
     return GetBuilder<HomeAllSlotController>(
@@ -23,13 +22,9 @@ class HomeAllSlotPage extends StatelessWidget {
             onRefresh: controller.getIncomes,
             child: Scaffold(
               appBar: appBarWidget(
-                  text: 'Todas los puntos',
-                  actions: [
-                    const IconWidget(
-                      padding: EdgeInsets.only(right: 8),
-                      iconData: Icons.search,
-                    ),
-                  ]),
+                hasArrowBack: true,
+                text: 'Todos los puntos',
+              ),
               body: SizedBox(
                 height: size.height,
                 width: size.width,
@@ -58,6 +53,22 @@ class HomeAllSlotPage extends StatelessWidget {
     );
   }
 
+  Future<void> onTapDateTime({
+    required HomeAllSlotController controller,
+    required BuildContext context,
+  }) async {
+    DateTimeRange? range = await showDateRangePicker(
+        firstDate: DateTime.now().subtract(const Duration(days: 180)),
+        initialDateRange: DateTimeRange(
+          start: controller.initialDay.orNow(),
+          end: controller.finalDay.orNow(),
+        ),
+        lastDate: DateTime.now().add(const Duration(days: 10)),
+        context: context,
+        initialEntryMode: DatePickerEntryMode.calendar);
+    controller.onChangeRange(range);
+  }
+
   Widget _chooseDates({
     required BuildContext context,
     required HomeAllSlotController controller,
@@ -71,33 +82,32 @@ class HomeAllSlotPage extends StatelessWidget {
         vertical: 15,
         horizontal: 20,
       ),
-      child: GestureDetector(
-        onTap: () async {
-          DateTimeRange? range = await showDateRangePicker(
-            firstDate: DateTime.now().subtract(const Duration(days: 180)),
-            initialDateRange: DateTimeRange(
-                start: controller.initialDay.orNow(), 
-                end: controller.finalDay.orNow(), 
+      child: Row(
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: () =>
+                  onTapDateTime(context: context, controller: controller),
+              child: Row(
+                children: [
+                  const Icon(Icons.date_range_outlined),
+                  Expanded(
+                      child: Text(
+                    rangeDateString,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.center,
+                  )),
+                ],
               ),
-            lastDate: DateTime.now().add(const Duration(days: 10)),
-            context: context,
-            initialEntryMode: DatePickerEntryMode.calendar);
-            controller.onChangeRange(range);
-        },
-        child: Row(
-          children: [
-            const Icon(Icons.date_range_outlined),
-            Expanded(
-                child: Text(
-              rangeDateString,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
-              textAlign: TextAlign.center,
-            ))
-          ],
-        ),
+            ),
+          ),
+          const IconWidget(
+            iconData: Icons.search,
+          ),
+        ],
       ),
     );
   }
@@ -189,31 +199,43 @@ class HomeAllSlotPage extends StatelessWidget {
         child: SizedBox(
           height: 75,
           child: ListTile(
-            title: Row(
-              children: [
-                Text(
-                  (item.typeIncome == 'Ingreso') ? ' +' : ' -',
-                ),
-                Text(
-                  ' S/ ${item.amount.formatDecimals()}',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            subtitle: Row(
-              children: [
-                Text(item.date
-                    .format(formatDate: 'EEEE d/MM hh:mm a')
-                    .orEmpty()),
-              ],
-            ),
-            trailing: Icon(
-              (item.isApproved ?? false)
-                  ? Icons.check_outlined
-                  : Icons.warning_outlined,
-              color: (item.isApproved ?? false) ? successColor() : alertColor(),
-            ),
-          ),
+              title: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    (item.typeIncome == 'Ingreso') ? ' +' : ' -',
+                  ),
+                  Text(
+                    ' S/ ${item.amount.formatDecimals()}',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  if (item.isApproved == false)
+                  IconWidget(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    iconData: Icons.warning_outlined,
+                    size: 16,
+                    color: alertColor(),
+                  ),
+                ],
+              ),
+              subtitle: Row(
+                children: [
+                  Text(item.date
+                      .format(formatDate: 'EEEE d/MM hh:mm a')
+                      .orEmpty()),
+                ],
+              ),
+              trailing: (item.pointMachineEntity?.pointEntity?.alias != null)
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        item.pointMachineEntity!.pointEntity!.alias,
+                        textAlign: TextAlign.end,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w400, fontSize: 12),
+                      ),
+                    )
+                  : null),
         ),
       ),
     );

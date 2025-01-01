@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:traga_monedas/src/point/domain/entities/point_machine_entity.dart';
+
 List<IncomeEntity> incomeEntityFromJson(String str) => List<IncomeEntity>.from(json.decode(str).map((x) => IncomeEntity.fromJson(x)));
 
 String incomeEntityToJson(List<IncomeEntity> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -20,6 +22,7 @@ class IncomeEntity {
     DateTime updatedAt;
     int? idUser;
     int idPointMachine;
+    PointMachineEntity? pointMachineEntity;
 
     IncomeEntity({
         required this.id,
@@ -33,6 +36,7 @@ class IncomeEntity {
         required this.updatedAt,
         required this.idUser,
         required this.idPointMachine,
+        this.pointMachineEntity,
     });
 
     factory IncomeEntity.fromJson(Map<String, dynamic> json) => IncomeEntity(
@@ -47,6 +51,7 @@ class IncomeEntity {
         updatedAt: DateTime.parse(json["updatedAt"]),
         idUser: json["idUser"],
         idPointMachine: json["idPointMachine"],
+        pointMachineEntity: PointMachineEntity.fromJson(json["PointMachine"]),
     );
 
     Map<String, dynamic> toJson() => {
@@ -61,5 +66,6 @@ class IncomeEntity {
         "updatedAt": updatedAt.toIso8601String(),
         "idUser": idUser,
         "idPointMachine": idPointMachine,
+        "PointMachine": pointMachineEntity?.toJson(),
     };
 }

@@ -1,40 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:traga_monedas/src/home/ui/pages/choose_machine_point/choose_machine_point_controller.dart';
+import 'package:traga_monedas/src/point_machine/ui/pages/machine_points/machine_points_controller.dart';
 import 'package:traga_monedas/src/home/ui/widgets/empty_widget.dart';
 import 'package:traga_monedas/src/point/domain/entities/point_machine_entity.dart';
+import 'package:traga_monedas/src/utils/ui/constants_ui.dart';
 import 'package:traga_monedas/src/utils/ui/ids_get.dart';
 import 'package:utils/utils.dart';
 
-class ChooseSlotMachinePointPage extends StatelessWidget {
-  const ChooseSlotMachinePointPage({super.key});
+class MachinePointsPage extends StatelessWidget {
+  const MachinePointsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final ChooseSlotMachinePointController controller =
-        Get.find<ChooseSlotMachinePointController>();
+    final MachinePointsController controller =
+        Get.find<MachinePointsController>();
     final Size size = MediaQuery.of(context).size;
 
-    return GetBuilder<ChooseSlotMachinePointController>(
+    return GetBuilder<MachinePointsController>(
       init: controller,
       id: pageIdGet,
       builder: (controller) => Stack(
         children: [
           Scaffold(
-            floatingActionButton: GetBuilder<ChooseSlotMachinePointController>(
+            floatingActionButton: GetBuilder<MachinePointsController>(
               id: pointsMachineIdGet,
               builder: (_) => Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  if(controller.pointsMachine.isNotEmpty)
-                  FloatingActionButton(
-                    heroTag: 'goAnalyticsAll',
-                    backgroundColor: primaryColor(),
-                    onPressed: controller.goToContentAllSlot,
-                    child: const Icon(Icons.analytics, color: Colors.white,),
-                  ),
-                  if(controller.pointsMachine.isNotEmpty)
-                  const SizedBox(height: 15,),
                   FloatingActionButton(
                     heroTag: 'goAddPointMachine',
                     onPressed: controller.goAddPointMachine,
@@ -58,7 +50,7 @@ class ChooseSlotMachinePointPage extends StatelessWidget {
               onRefresh: controller.getPointsMachine,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
-                child: GetBuilder<ChooseSlotMachinePointController>(
+                child: GetBuilder<MachinePointsController>(
                   id: pointsMachineIdGet,
                   builder: (_) => (controller.pointsMachine.isEmpty)
                       ? SizedBox(
@@ -74,7 +66,7 @@ class ChooseSlotMachinePointPage extends StatelessWidget {
               ),
             ),
           ),
-          GetBuilder<ChooseSlotMachinePointController>(
+          GetBuilder<MachinePointsController>(
               id: validandoIdGet,
               builder: (_) => LoadingWidget(show: controller.validando)),
         ],
@@ -84,7 +76,7 @@ class ChooseSlotMachinePointPage extends StatelessWidget {
 
   List<Widget> _slotsMachinePoint({
     required Size size,
-    required ChooseSlotMachinePointController controller,
+    required MachinePointsController controller,
   }) {
     List<Widget> pointsMachine = [];
 
@@ -102,15 +94,13 @@ class ChooseSlotMachinePointPage extends StatelessWidget {
   Widget _itemPointMachine({
     required Size size,
     required PointMachineEntity item,
-    required ChooseSlotMachinePointController controller,
+    required MachinePointsController controller,
   }) {
     return ItemListImageDataWidget(
       onTap: () => controller.goToContentSlot(item),
-      cardElevation: 5,
-      decorationAll: BoxDecoration(
-          border: Border.all(color: primaryColor()),
-          borderRadius: BorderRadius.circular(borderRadius())),
-      paddingAll: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      cardElevation: cardElevationItemConstant,
+      decorationAll: decorationAllItemConstant,
+      paddingAll: paddingAllItemConstant,
       paddingImage: defaultPadding,
       width: size.width,
       height: size.height * 0.15,
