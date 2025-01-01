@@ -12,7 +12,8 @@ class CreateIncomeUseCase {
     required this.repository,
   });
 
-  Future<ResultType<IncomeEntity, ErrorEntity>> execute(AddIncomeRequest addIncomeRequest) async {
+  Future<ResultType<IncomeEntity, ErrorEntity>> execute({
+    required AddIncomeRequest addIncomeRequest}) async {
     return repository.createIncome(addIncomeRequest);
   }
 

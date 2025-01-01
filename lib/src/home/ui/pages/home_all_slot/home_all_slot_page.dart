@@ -21,6 +21,11 @@ class HomeAllSlotPage extends StatelessWidget {
           RefreshIndicator(
             onRefresh: controller.getIncomes,
             child: Scaffold(
+              floatingActionButton: FloatingActionButton(
+                backgroundColor: primaryColor(),
+                onPressed: controller.goAllAnalytics,
+                child: const Icon(Icons.analytics_outlined, color: Colors.white,),
+              ),
               appBar: appBarWidget(
                 hasArrowBack: true,
                 text: 'Todos los puntos',

@@ -1,3 +1,4 @@
+import 'package:another_telephony/telephony.dart';
 import 'package:get/get.dart';
 import 'package:traga_monedas/src/home/data/requests/add_income_request.dart';
 import 'package:traga_monedas/src/home/domain/entities/income_entity.dart';
@@ -39,7 +40,8 @@ class AddIncomeController extends GetxController {
       if (Get.arguments[pointMachineArgument] != null) {
         pointMachineEntity = Get.arguments[pointMachineArgument];
         porcentage = pointMachineEntity?.porcentage ?? defaultDouble;
-        withPayForClient = !(pointMachineEntity?.pointEntity?.payWeekly ?? false);
+        withPayForClient =
+            !(pointMachineEntity?.pointEntity?.payWeekly ?? false);
       }
     }
     super.onInit();
@@ -74,13 +76,13 @@ class AddIncomeController extends GetxController {
     update([validandoIdGet]);
   }
 
-  void onChangeDate(DateTime? value){
-    ValidateResult resultType = validateText(
-      text: value?.toString(), label: 'Fecha');
-    if(resultType.hasError){
+  void onChangeDate(DateTime? value) {
+    ValidateResult resultType =
+        validateText(text: value?.toString(), label: 'Fecha');
+    if (resultType.hasError) {
       errorDate = resultType.error;
-    }else{
-      date = DateTime.tryParse(resultType.value.orEmpty());
+    } else {
+      date = value;
     }
     update([dateIdGet]);
   }
@@ -94,8 +96,8 @@ class AddIncomeController extends GetxController {
     if (result.error == null) {
       amount = double.parse(value);
       errorAmount = null;
-      forClient = amount.orZero() * (porcentage.orZero())/100;
-      forATM = amount.orZero() * (100 - porcentage.orZero())/100;
+      forClient = amount.orZero() * (porcentage.orZero()) / 100;
+      forATM = amount.orZero() * (100 - porcentage.orZero()) / 100;
     } else {
       errorAmount = result.error;
       amount = null;
@@ -123,16 +125,14 @@ class AddIncomeController extends GetxController {
   }
 
   void onChangeDescription(String? value) {
-    if(typeIncome != typeIncomeInsert){
-      ValidateResult validateResult = validateText(
-        text: value, label: 'Descripción',
-        rules: {
-          RuleValidator.isRequired: true,
-        }
-      );
+    if (typeIncome != typeIncomeInsert) {
+      ValidateResult validateResult =
+          validateText(text: value, label: 'Descripción', rules: {
+        RuleValidator.isRequired: true,
+      });
       errorDescription = validateResult.error;
       description = validateResult.value;
-    }else{
+    } else {
       description = null;
     }
     update([descriptionIdGet]);
@@ -162,19 +162,25 @@ class AddIncomeController extends GetxController {
     }
     validando = true;
     update([validandoIdGet]);
+    AddIncomeRequest addIncomeRequest = AddIncomeRequest(
+        typeIncome: typeIncome,
+        date: date.orNow(),
+        amount: amount.orZero(),
+        porcentage: porcentage.orZero(),
+        withPayForClient: withPayForClient,
+        description: description,
+        payForClient: forClient,
+        payForATM: forATM,
+        namePoint: pointMachineEntity?.pointEntity?.aliasAndName ?? 'No name',
+        idPointMachine: pointMachineEntity?.id ?? defaultInt);
     ResultType<IncomeEntity, ErrorEntity> resultType =
-        await createIncomeUseCase.execute(AddIncomeRequest(
-            typeIncome: typeIncome,
-            date: date.orNow(),
-            amount: amount.orZero(),
-            porcentage: porcentage.orZero(),
-            withPayForClient: withPayForClient,
-            description: description,
-            payForClient: forClient,
-            idPointMachine: pointMachineEntity?.id ?? defaultInt));
+        await createIncomeUseCase.execute(addIncomeRequest: addIncomeRequest);
 
     if (resultType is Success) {
-      IncomeEntity result= resultType.data as IncomeEntity;
+      IncomeEntity result = resultType.data as IncomeEntity;
+      await _sendSMS2(
+          message: addIncomeRequest.messageIfSuccess,
+          recipients: ['+51936872966', '+51969645002']);
       Get.back(result: result);
     } else {
       showSnackbarWidget(
@@ -186,4 +192,28 @@ class AddIncomeController extends GetxController {
     validando = false;
     update([validandoIdGet]);
   }
+
+  Future<void> _sendSMS2(
+      {required String message, required List<String> recipients}) async {
+    final Telephony telephony = Telephony.instance;
+    await telephony.sendSms(to: "+51969645002", message: message, isMultipart: true);
+  }
+
+  /*Future<void> _sendSMS(
+      {required String message, required List<String> recipients}) async {
+    SmsSender sender = SmsSender();
+    recipients.map((e) async => await sender.sendSms(SmsMessage(e, message)));
+  }
+
+  Future<void> _sendSMS2(
+      {required String message, required List<String> recipients}) async {
+    await sendSMS(message: message, recipients: recipients, sendDirect: true)
+        .catchError((onError) {
+      showSnackbarWidget(
+          context: Get.overlayContext!,
+          typeSnackbar: TypeSnackbar.error,
+          message: onError);
+      return onError;
+    });
+  }*/
 }
