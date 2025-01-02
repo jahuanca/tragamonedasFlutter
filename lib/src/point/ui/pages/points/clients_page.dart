@@ -27,6 +27,7 @@ class PointsPage extends StatelessWidget {
                 builder: (_) => ListView.builder(
                     itemCount: controller.points.length,
                     itemBuilder: (context, index) => ItemListImageDataWidget(
+                          onTap: () => controller.goDetail(controller.points[index]),
                           cardElevation: cardElevationItemConstant,
                           decorationAll: decorationAllItemConstant,
                           paddingAll: paddingAllItemConstant,

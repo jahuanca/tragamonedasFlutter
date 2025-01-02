@@ -40,6 +40,7 @@ class LoginPage extends StatelessWidget {
                         id: emailIdGet,
                         builder: (_) => InputWidget(
                             maxLength: 50,
+                            textInputType: TextInputType.emailAddress,
                             onChanged: controller.onChangedEmail,
                             error: controller.errorEmail,
                             icon: const Icon(Icons.person_outline),

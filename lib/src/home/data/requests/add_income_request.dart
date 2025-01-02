@@ -41,12 +41,12 @@ class AddIncomeRequest {
         date.format(formatDate: 'EEEE d/MM hh:mm a') ?? emptyString;
     if (typeIncome == 'Ingreso') {
       if (withPayForClient.orFalse()) {
-        return '$namePoint $dateFormat.- Se ingreso ${amount.formatDecimals()}, se canceló al cliente ${payForClient?.formatDecimals()} y para caja: ${payForATM?.formatDecimals()}.';
+        return '$namePoint $dateFormat: (${porcentage.formatDecimals()}%) Se ingreso ${amount.formatDecimals()}, se canceló al cliente ${payForClient?.formatDecimals()} y para caja: ${payForATM?.formatDecimals()}.';
       } else {
-        return '$namePoint $dateFormat.- Se ingreso ${amount.formatDecimals()}.';
+        return '$namePoint $dateFormat: (${porcentage.formatDecimals()}%) Se ingreso ${amount.formatDecimals()}, será para el cliente ${payForClient?.formatDecimals()} y para caja: ${payForATM?.formatDecimals()}.';
       }
     } else {
-      return '$namePoint $dateFormat.- Se retiró ${amount.formatDecimals()}, motivo: $description.';
+      return '$namePoint $dateFormat: Se retiró ${amount.formatDecimals()}, motivo: $description.';
     }
   }
 

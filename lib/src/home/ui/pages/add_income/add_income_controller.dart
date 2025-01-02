@@ -160,6 +160,13 @@ class AddIncomeController extends GetxController {
           message: message);
       return;
     }
+
+    bool? result = await showDialogWidget(
+      context: Get.overlayContext!, 
+      message: '¿Está seguro de realizar este registro?');
+
+    if(result.orFalse() == false) return;
+
     validando = true;
     update([validandoIdGet]);
     AddIncomeRequest addIncomeRequest = AddIncomeRequest(

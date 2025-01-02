@@ -52,6 +52,7 @@ class PointEntity {
   });
   
   String get aliasAndName => '$alias: $firstName';
+  String get fullName => '$firstName $lastName';
 
   Map<String, dynamic> toJson() => {
         _idKey: id,

@@ -30,7 +30,7 @@ flutter:
   uses-material-design: true
 
   assets:
-  - assets/
+  - assets/icons/
   - packages/utils/assets/images/image_not_found.png
 
   # example:

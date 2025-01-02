@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:traga_monedas/src/point/data/requests/point_request.dart';
 import 'package:traga_monedas/src/point/domain/entities/point_entity.dart';
 import 'package:traga_monedas/src/point/domain/use_cases/get_points_use_case.dart';
+import 'package:traga_monedas/src/point/ui/pages/detail_client/detail_client_page.dart';
+import 'package:traga_monedas/src/utils/ui/arguments.dart';
 import 'package:traga_monedas/src/utils/ui/ids_get.dart';
 import 'package:utils/utils.dart';
 
@@ -34,5 +36,11 @@ class ClientsController extends GetxController {
     }
     validando = false;
     update([pointsIdGet, validandoIdGet]);
+  }
+
+  void goDetail(PointEntity pointEntity){
+    Get.to(()=> const DetailClientPage(), arguments: {
+      pointEntityArgument: pointEntity,
+    });
   }
 }
