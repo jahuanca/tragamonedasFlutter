@@ -91,8 +91,11 @@ class HomeAllSlotController extends GetxController {
   }
 
   void goAllAnalytics() async {
-    Get.to(() => AllAnalyticsPage(),
-        arguments: {incomesArgument: incomes.toList()});
+    Get.to(() => const AllAnalyticsPage(),
+        arguments: {
+          incomesArgument: incomes.toList(),
+          rangeDateArgument: DateTimeRange(start: initialDay.orNow(), end: finalDay.orNow(),),
+        });
   }
 
   void goAddIncome() async {

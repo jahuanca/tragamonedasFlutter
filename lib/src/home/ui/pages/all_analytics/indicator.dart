@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:utils/utils.dart';
 
 class Indicator extends StatelessWidget {
   const Indicator({
@@ -6,6 +7,8 @@ class Indicator extends StatelessWidget {
     required this.color,
     required this.text,
     required this.isSquare,
+    required this.porcentage,
+    required this.total,
     this.size = 16,
     this.textColor,
   });
@@ -13,32 +16,54 @@ class Indicator extends StatelessWidget {
   final String text;
   final bool isSquare;
   final double size;
+  final double porcentage;
+  final double total;
   final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            shape: isSquare ? BoxShape.rectangle : BoxShape.circle,
-            color: color,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              shape: isSquare ? BoxShape.rectangle : BoxShape.circle,
+              color: color,
+            ),
           ),
-        ),
-        const SizedBox(
-          width: 4,
-        ),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: textColor,
+          
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: textColor,
+            ),
           ),
-        )
-      ],
+          
+          Text(
+            '${porcentage.formatDecimals()} %',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.normal,
+              color: textColor,
+            ),
+          ),
+         
+          Text(
+            'S/ ${total.formatDecimals()}',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.normal,
+              color: textColor,
+            ),
+          )
+        ],
+      ),
     );
   }
 }

@@ -196,24 +196,9 @@ class AddIncomeController extends GetxController {
   Future<void> _sendSMS2(
       {required String message, required List<String> recipients}) async {
     final Telephony telephony = Telephony.instance;
-    await telephony.sendSms(to: "+51969645002", message: message, isMultipart: true);
+    //+51951675718
+    //+51936872966
+    await telephony.sendSms(to: "+51936872966", message: message, isMultipart: true);
   }
 
-  /*Future<void> _sendSMS(
-      {required String message, required List<String> recipients}) async {
-    SmsSender sender = SmsSender();
-    recipients.map((e) async => await sender.sendSms(SmsMessage(e, message)));
-  }
-
-  Future<void> _sendSMS2(
-      {required String message, required List<String> recipients}) async {
-    await sendSMS(message: message, recipients: recipients, sendDirect: true)
-        .catchError((onError) {
-      showSnackbarWidget(
-          context: Get.overlayContext!,
-          typeSnackbar: TypeSnackbar.error,
-          message: onError);
-      return onError;
-    });
-  }*/
 }

@@ -8,100 +8,90 @@ import 'package:utils/utils.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class AllAnalyticsPage extends StatelessWidget {
-  AllAnalyticsPage({super.key});
+  const AllAnalyticsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
     return GetBuilder<AllAnalyticsController>(
       id: pageIdGet,
       init: AllAnalyticsController(),
       builder: (controller) => Scaffold(
         appBar: appBarWidget(hasArrowBack: true, text: 'Analíticas'),
-        body: _contentPie(),
+        body: _contentPie(controller: controller, size: size),
       ),
     );
   }
 
-  Widget _contentPie() {
-    return AspectRatio(
-      aspectRatio: 1.3,
-      child: Row(
-        children: <Widget>[
-          const SizedBox(
-            height: 18,
+  Widget _contentPie({
+    required AllAnalyticsController controller,
+    required Size size,
+  }) {
+
+    List<PieChartMetaData>  values = controller.data.values.toList();
+    values.sort((a, b) => b.amount.compareTo(a.amount),);          
+    
+    List<Widget> items = values.map((PieChartMetaData e) => Indicator(
+                  total: e.amount,
+                  porcentage: (e.amount / controller.allAmount * 100),
+                  color: e.color,
+                  text: e.name,
+                  isSquare: true))
+              .toList();
+
+
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Text(
+            'Ingresos \n${controller.dateTimeRange?.start.orNow().formatDMMYYY()} - ${controller.dateTimeRange?.end.orNow().formatDMMYYY()}',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          Expanded(
-            child: AspectRatio(
-              aspectRatio: 1,
-              child: PieChart(
-                PieChartData(
-                  pieTouchData: PieTouchData(
-                    touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                      /*setState(() {
-                        if (!event.isInterestedForInteractions ||
-                            pieTouchResponse == null ||
-                            pieTouchResponse.touchedSection == null) {
-                          touchedIndex = -1;
-                          return;
-                        }
-                        touchedIndex = pieTouchResponse
-                            .touchedSection!.touchedSectionIndex;
-                      });*/
-                    },
-                  ),
-                  borderData: FlBorderData(
-                    show: false,
-                  ),
-                  sectionsSpace: 0,
-                  centerSpaceRadius: 40,
-                  sections: showingSections(),
-                ),
+        ),
+        SizedBox(
+          width: size.width,
+          height: size.height * 0.4,
+          child: PieChart(
+            PieChartData(
+              pieTouchData: PieTouchData(
+                touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                  /*setState(() {
+                          if (!event.isInterestedForInteractions ||
+                              pieTouchResponse == null ||
+                              pieTouchResponse.touchedSection == null) {
+                            touchedIndex = -1;
+                            return;
+                          }
+                          touchedIndex = pieTouchResponse
+                              .touchedSection!.touchedSectionIndex;
+                        });*/
+                },
+              ),
+              borderData: FlBorderData(
+                show: false,
+              ),
+              sectionsSpace: 0,
+              centerSpaceRadius: 50,
+              sections: showingSections(
+                data: controller.data.values.toList(),
+                allAmount: controller.allAmount,
               ),
             ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Indicator(
-                color: infoColor(),
-                text: 'First',
-                isSquare: true,
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Indicator(
-                color: alertColor(),
-                text: 'Second',
-                isSquare: true,
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Indicator(
-                color: Colors.purple,
-                text: 'Third',
-                isSquare: true,
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Indicator(
-                color: successColor(),
-                text: 'Fourth',
-                isSquare: true,
-              ),
-              SizedBox(
-                height: 18,
-              ),
-            ],
-          ),
-          const SizedBox(
-            width: 28,
-          ),
-        ],
-      ),
+        ),
+        
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: items,
+        ),
+      ],
     );
   }
 }
