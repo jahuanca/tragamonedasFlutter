@@ -46,7 +46,7 @@ class MainPage extends StatelessWidget {
               title: 'Máquinas'),
             BottomNavigationItemWidget(
               icon: Icons.settings_outlined, 
-              title: 'Configuración'),
+              title: 'Opciones'),
           ], 
           onTapItem: controller.onTapItem, 
           indexSelectedItem: controller.indexPage,

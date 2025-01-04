@@ -15,7 +15,7 @@ class AddPointPage extends StatelessWidget {
     return GetBuilder<AddPointControlller>(
       init: controller,
       builder: (controller) => Scaffold(
-        appBar: appBarWidget(hasArrowBack: true, text: 'Agregar punto'),
+        appBar: appBarWidget(hasArrowBack: true, text: controller.titlePage),
         body: Stack(
           children: [
             SingleChildScrollView(
@@ -27,12 +27,14 @@ class AddPointPage extends StatelessWidget {
                     GetBuilder<AddPointControlller>(
                         id: nameIdGet,
                         builder: (_) => InputWidget(
+                            initialValue: controller.firstName,
                             onChanged: controller.onChangedName,
                             label: 'Nombre',
                             hintText: 'Ingrese el nombre')),
                     GetBuilder<AddPointControlller>(
                         id: lastNameIdGet,
                         builder: (_) => InputWidget(
+                            initialValue: controller.lastName,
                             onChanged: controller.onChangedLastName,
                             label: 'Apellido',
                             hintText: 'Ingrese el apellido')),
@@ -40,6 +42,7 @@ class AddPointPage extends StatelessWidget {
                         id: phoneNumberIdGet,
                         builder: (_) => InputWidget(
                             maxLength: 9,
+                            initialValue: controller.phoneNumber,
                             textInputType: TextInputType.phone,
                             onChanged: controller.onChangedPhoneNumber,
                             label: 'Teléfono',
@@ -47,6 +50,7 @@ class AddPointPage extends StatelessWidget {
                     GetBuilder<AddPointControlller>(
                         id: emailIdGet,
                         builder: (_) => InputWidget(
+                            initialValue: controller.email,
                             textInputType: TextInputType.emailAddress,
                             onChanged: controller.onChangedEmail,
                             label: 'Correo electronico',
@@ -54,6 +58,7 @@ class AddPointPage extends StatelessWidget {
                     GetBuilder<AddPointControlller>(
                       id: porcentageIdGet,
                       builder: (_) => InputWidget(
+                          initialValue: controller.porcentage,
                           onChanged: controller.onChangedPorcentage,
                           label: 'Porcentaje negociado',
                           iconOverlay: Icons.view_compact_outlined,
@@ -72,12 +77,14 @@ class AddPointPage extends StatelessWidget {
                     GetBuilder<AddPointControlller>(
                         id: aliasIdGet,
                         builder: (_) => InputWidget(
+                            initialValue: controller.alias,
                             onChanged: controller.onChangedAlias,
                             label: 'Alias',
                             hintText: 'Ingrese un alias')),
                     GetBuilder<AddPointControlller>(
                         id: addressIdGet,
                         builder: (_) => InputWidget(
+                            initialValue: controller.address,
                             onChanged: controller.onChangedAddress,
                             label: 'Dirección',
                             maxLength: 50,
@@ -87,7 +94,7 @@ class AddPointPage extends StatelessWidget {
                         elevation: 12,
                         onTap: controller.createPoint,
                         padding: const EdgeInsets.only(top: 20),
-                        text: 'Crear'),
+                        text: controller.editing ? 'Editar' : 'Crear'),
                   ],
                 ),
               ),

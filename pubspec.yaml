@@ -15,6 +15,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   get: ^4.6.6
   fl_chart: ^0.69.2
+  url_launcher: ^6.3.1
   utils:
     git: https://github.com/jahuanca/utilsFlutter
   another_telephony: ^0.3.0

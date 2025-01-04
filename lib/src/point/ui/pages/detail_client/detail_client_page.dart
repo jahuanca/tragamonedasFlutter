@@ -151,23 +151,35 @@ class DetailClientPage extends StatelessWidget {
                 ),
               ],
             ),
-            _itemsAction(),
+            _itemsAction(
+              controller: controller,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _itemsAction() {
+  Widget _itemsAction({
+    required DetailClientController controller,
+  }) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _action(icon: Icons.call_outlined, title: 'Llamar'),
-          _action(icon: Icons.sms_outlined, title: 'Mensaje'),
-          _action(icon: Icons.waving_hand_outlined, title: 'Whatsapp'),
-          _action(icon: Icons.email_outlined, title: 'Email'),
+          _action(
+            onTap: controller.goCallPhone,
+            icon: Icons.call_outlined, title: 'Llamar'),
+          _action(
+            onTap: controller.goSendSMS,
+            icon: Icons.sms_outlined, title: 'Mensaje'),
+          _action(
+            onTap: controller.goSendWhatsapp,
+            icon: Icons.waving_hand_outlined, title: 'Whatsapp'),
+          _action(
+            onTap: controller.goSendEmail,
+            icon: Icons.email_outlined, title: 'Email'),
         ],
       ),
     );
@@ -176,33 +188,37 @@ class DetailClientPage extends StatelessWidget {
   Widget _action({
     required IconData icon,
     required String title,
+    required void Function()? onTap,
   }) {
     const double dimenContainer = 85;
     const Color color = Colors.white;
-    return Container(
-      width: dimenContainer,
-      height: dimenContainer,
-      decoration: BoxDecoration(
-        border: Border.all(color: color),
-        borderRadius: BorderRadius.circular(borderRadius()),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconWidget(
-              iconData: icon,
-              color: color,
-            ),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 12,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: dimenContainer,
+        height: dimenContainer,
+        decoration: BoxDecoration(
+          border: Border.all(color: color),
+          borderRadius: BorderRadius.circular(borderRadius()),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconWidget(
+                iconData: icon,
                 color: color,
               ),
-            ),
-          ],
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: color,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

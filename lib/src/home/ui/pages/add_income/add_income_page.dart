@@ -39,8 +39,8 @@ class AddIncomePage extends StatelessWidget {
                           DateTime? selectedDate = await showDatePicker(
                             context: context,
                             initialDate: controller.date ?? defaultDate,
-                            firstDate: defaultDate
-                                .subtract(const Duration(days: 180)),
+                            firstDate:
+                                defaultDate.subtract(const Duration(days: 180)),
                             lastDate: defaultDate,
                           );
                           if (selectedDate != null) {
@@ -123,6 +123,7 @@ class AddIncomePage extends StatelessWidget {
               ),
             ),
             GetBuilder<AddIncomeController>(
+              id: validandoIdGet,
               builder: (_) => LoadingWidget(show: controller.validando),
             )
           ],
