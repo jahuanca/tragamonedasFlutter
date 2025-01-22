@@ -1,49 +1,46 @@
 
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-void sendSMS({
+Future<bool> sendSMS({
   required String numberPhone,
 }) async {
   Uri url = Uri.parse("sms:$numberPhone");
-  if (await canLaunchUrl(url)) {
-    await launchUrl(url);
-  } else {
-    throw 'Could not launch $url';
-  }
+  return await _canUrl(url);
 }
 
-void callPhone({
+Future<bool> callPhone({
   required String numberPhone,
 }) async {
   Uri url = Uri.parse("tel:+51$numberPhone");
-  if (await canLaunchUrl(url)) {
-    await launchUrl(url);
-  } else {
-    throw 'Could not launch $url';
-  }
+  return await _canUrl(url);
 }
 
-void sendEmail({
+Future<bool> sendEmail({
   required String email,
   required String subject,
   required String body,
 }) async {
   Uri url = Uri.parse("mailto:$email?subject=$subject&body=$body");
-  if (await canLaunchUrl(url)) {
-    await launchUrl(url);
-  } else {
-    throw 'Could not launch $url';
-  }
+  return await _canUrl(url);
 }
 
-void sendWhatsapp({
+Future<bool> sendWhatsapp({
   required String numberPhone,
   required String message,
 }) async {
   Uri url = Uri.parse("whatsapp://send?phone=$numberPhone&amp;text=$message");
+  return await _canUrl(url);
+}
+
+Future<bool> _canUrl(url) async {
   if (await canLaunchUrl(url)) {
-    await launchUrl(url);
+    return await launchUrl(url);
   } else {
-    throw 'Could not launch $url';
+    return false;
   }
+}
+
+void copyData(String data) {
+  Clipboard.setData(ClipboardData(text: data));
 }

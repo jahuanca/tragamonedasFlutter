@@ -74,6 +74,6 @@ class AddIncomeRequest {
         payForClient: json[_payForClientKey],
         payForATM: json[_payForATMKey],
         namePoint: json[_namePointKey],
-        date: DateTime.parse(json[_dateKey]),
+        date: DateTime.parse(json[_dateKey]).toLocal(),
       );
 }

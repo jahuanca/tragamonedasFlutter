@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:traga_monedas/src/home/domain/entities/income_entity.dart';
 import 'package:traga_monedas/src/home/ui/pages/home_slot/home_slot_controller.dart';
+import 'package:traga_monedas/src/home/ui/pages/home_slot/home_slot_extensions.dart';
+import 'package:traga_monedas/src/home/ui/pages/home_slot/options_menu.dart';
 import 'package:traga_monedas/src/home/ui/widgets/empty_widget.dart';
+import 'package:traga_monedas/src/utils/core/colors.dart';
+import 'package:traga_monedas/src/utils/core/enum_type_page.dart';
 import 'package:utils/utils.dart';
 
 class HomeSlotPage extends StatelessWidget {
@@ -21,22 +25,33 @@ class HomeSlotPage extends StatelessWidget {
           RefreshIndicator(
             onRefresh: controller.getIncomes,
             child: Scaffold(
-              floatingActionButton: FloatingActionButton(
-                onPressed: controller.goAddIncome,
-                child: const Icon(Icons.add),
-              ),
+              bottomNavigationBar: controller.typePage.isSelection()
+                  ? BottomNavigationBarWidget(
+                      icons: OptionsMenuSelection.values
+                          .map(
+                            (e) => BottomNavigationItemWidget(
+                                icon: e.iconData, title: e.title),
+                          )
+                          .toList(),
+                      onTapItem: (index) =>
+                          controller.onTapItem(OptionsMenuSelection.values[index]),
+                      indexSelectedItem: notFoundPosition,
+                      colorUnselected: primaryColor(),
+                    )
+                  : null,
+              floatingActionButton: controller.typePage.isNormal()
+                  ? FloatingActionButton(
+                      onPressed: controller.goAddIncome,
+                      child: const Icon(Icons.add),
+                    )
+                  : null,
               appBar: appBarWidget(
                   hasArrowBack: true,
                   text: controller.pointMachineEntity?.pointEntity?.alias ??
                       emptyString,
-                  actions: [
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: CircleAvatar(
-                        child: Text('HD'),
-                      ),
-                    ),
-                  ]),
+                  actions: controller.typePage.isNormal()
+                      ? actionsNormal(controller: controller)
+                      : actionsSeletected(controller: controller)),
               body: SizedBox(
                 height: size.height,
                 width: size.width,
@@ -194,8 +209,18 @@ class HomeSlotPage extends StatelessWidget {
     required HomeSlotController controller,
   }) {
     return ListView.builder(
-      itemBuilder: (context, index) =>
-          _itemList(item: controller.incomes[index], context: context),
+      itemBuilder: (context, index) => GetBuilder<HomeSlotController>(
+        id: 'item_${controller.incomes[index].id}',
+        builder: (controller) => _itemList(
+            onTap: () => controller
+                .goSelectedItem(controller.incomes[index]),
+            isSelected:
+                controller.idsSelecteds.any((e) => e.id == controller.incomes[index].id,),
+            onLongPress: () => controller
+                .onChangeView(controller.incomes[index]),
+            item: controller.incomes[index],
+            context: context),
+      ),
       itemCount: controller.incomes.length,
     );
   }
@@ -203,38 +228,48 @@ class HomeSlotPage extends StatelessWidget {
   Widget _itemList({
     required IncomeEntity item,
     required BuildContext context,
+    void Function()? onTap,
+    void Function()? onLongPress,
+    bool isSelected = false,
   }) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Material(
-        elevation: 5,
-        child: SizedBox(
-          height: 75,
-          child: ListTile(
-            title: Row(
-              children: [
-                Text(
-                  (item.typeIncome == 'Ingreso') ? ' +' : ' -',
+    return GetBuilder<HomeSlotController>(
+      builder: (controller) => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GestureDetector(
+          onTap: controller.typePage.isSelection() ? onTap : null,
+          onLongPress: controller.typePage.isNormal() ? onLongPress : null,
+          child: Material(
+            color: isSelected ? selectedItemColor : null,
+            elevation: 5,
+            child: SizedBox(
+              height: 75,
+              child: ListTile(
+                title: Row(
+                  children: [
+                    Text(
+                      (item.typeIncome == 'Ingreso') ? ' +' : ' -',
+                    ),
+                    Text(
+                      ' S/ ${item.amount.formatDecimals()}',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
-                Text(
-                  ' S/ ${item.amount.formatDecimals()}',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                subtitle: Row(
+                  children: [
+                    Text(item.date
+                        .format(formatDate: 'EEEE d/MM hh:mm a')
+                        .orEmpty()),
+                  ],
                 ),
-              ],
+                trailing: (item.isApproved == false)
+                    ? Icon(
+                        Icons.warning_outlined,
+                        color: alertColor(),
+                      )
+                    : null,
+              ),
             ),
-            subtitle: Row(
-              children: [
-                Text(item.date
-                    .format(formatDate: 'EEEE d/MM hh:mm a')
-                    .orEmpty()),
-              ],
-            ),
-            trailing: (item.isApproved == false)
-                ? Icon(
-                    Icons.warning_outlined,
-                    color: alertColor(),
-                  )
-                : null,
           ),
         ),
       ),

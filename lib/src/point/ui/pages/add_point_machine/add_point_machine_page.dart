@@ -37,7 +37,7 @@ class AddPointMachinePage extends StatelessWidget {
                             width: (size.width * 0.65) - paddingHeigth,
                             child: GetBuilder<AddPointMachineController>(
                               id: pointsIdGet,
-                              builder: (_) => DropdownWidget(
+                              builder: (_) => DropdownMenuWidget(
                                 label: 'Punto',
                                 idLabel: 'alias',
                                 idValue: 'id',
@@ -62,7 +62,7 @@ class AddPointMachinePage extends StatelessWidget {
                             width: (size.width * 0.65) - paddingHeigth,
                             child: GetBuilder<AddPointMachineController>(
                               id: machinesIdGet,
-                              builder: (_) => DropdownWidget(
+                              builder: (_) => DropdownMenuWidget(
                                 label: 'Maquina',
                                 idLabel: 'name',
                                 idValue: 'id',

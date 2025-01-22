@@ -82,7 +82,7 @@ class PointEntity {
         porcentage: (json[_porcentageKey] as num).toDouble(),
         latitude: json[_latitudeKey],
         longitude: json[_longitudeKey],
-        createdAt: DateTime.tryParse(json[_createdAtKey]),
-        updatedAt: DateTime.tryParse(json[_updatedAtKey]),
+        createdAt: DateTime.tryParse(json[_createdAtKey])?.toLocal(),
+        updatedAt: DateTime.tryParse(json[_updatedAtKey])?.toLocal(),
       );
 }

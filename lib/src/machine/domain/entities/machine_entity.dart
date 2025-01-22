@@ -38,12 +38,12 @@ class MachineEntity {
         name: json["name"],
         description: json["description"],
         observation: json["observation"],
-        purchaseDate: DateTime.parse(json["purchaseDate"]),
+        purchaseDate: DateTime.parse(json["purchaseDate"]).toLocal(),
         currencyValue: json["currencyValue"],
         image: json["image"],
         state: json["state"],
-        createdAt: DateTime.tryParse(json["createdAt"]),
-        updatedAt: DateTime.tryParse(json["updatedAt"]),
+        createdAt: DateTime.tryParse(json["createdAt"])?.toLocal(),
+        updatedAt: DateTime.tryParse(json["updatedAt"])?.toLocal(),
     );
 
     Map<String, dynamic> toJson() => {

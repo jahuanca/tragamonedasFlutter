@@ -42,6 +42,7 @@ class AddIncomeController extends GetxController {
         porcentage = pointMachineEntity?.porcentage ?? defaultDouble;
         withPayForClient =
             !(pointMachineEntity?.pointEntity?.payWeekly ?? false);
+        update([pageIdGet]);
       }
     }
     super.onInit();

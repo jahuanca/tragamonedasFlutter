@@ -39,8 +39,8 @@ class UserEntity {
         lastName: json["lastName"],
         phoneNumber: json["phoneNumber"],
         state: json["state"],
-        createdAt: DateTime.tryParse(json["createdAt"]),
-        updatedAt: DateTime.tryParse(json["updatedAt"]),
+        createdAt: DateTime.tryParse(json["createdAt"])?.toLocal(),
+        updatedAt: DateTime.tryParse(json["updatedAt"])?.toLocal(),
     );
 
     Map<String, dynamic> toJson() => {

@@ -22,12 +22,17 @@ class PointsPage extends StatelessWidget {
             onRefresh: controller.getPoints,
             child: Scaffold(
               appBar: appBarWidget(text: 'Clientes'),
+              floatingActionButton: FloatingActionButton(
+                onPressed: controller.goAdd,
+                child: const Icon(Icons.add),
+              ),
               body: GetBuilder<ClientsController>(
                 id: pointsIdGet,
                 builder: (_) => ListView.builder(
                     itemCount: controller.points.length,
                     itemBuilder: (context, index) => ItemListImageDataWidget(
-                          onTap: () => controller.goDetail(controller.points[index]),
+                          onTap: () =>
+                              controller.goDetail(controller.points[index]),
                           cardElevation: cardElevationItemConstant,
                           decorationAll: decorationAllItemConstant,
                           paddingAll: paddingAllItemConstant,

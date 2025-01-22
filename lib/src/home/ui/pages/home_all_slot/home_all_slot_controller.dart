@@ -22,7 +22,7 @@ class HomeAllSlotController extends GetxController {
 
   double get incomesInsert {
     return incomes.fold(
-        0,
+        defaultDouble,
         (previous, current) =>
             previous +
             (current.typeIncome == 'Ingreso' ? current.amount : defaultDouble));
@@ -30,7 +30,7 @@ class HomeAllSlotController extends GetxController {
 
   double get incomesExit {
     return incomes.fold(
-        0,
+        defaultDouble,
         (previous, current) =>
             previous +
             (current.typeIncome == 'Salida' ? current.amount : defaultDouble));

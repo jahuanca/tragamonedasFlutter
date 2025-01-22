@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:traga_monedas/src/point/domain/entities/point_machine_entity.dart';
+import 'package:utils/utils.dart';
 
 List<IncomeEntity> incomeEntityFromJson(String str) => List<IncomeEntity>.from(
     json.decode(str).map((x) => IncomeEntity.fromJson(x)));
@@ -41,16 +42,24 @@ class IncomeEntity {
     this.pointMachineEntity,
   });
 
+  String get summary {
+    if (typeIncome == 'Ingreso') {
+      return '${date.format(formatDate: 'EEEE d/MM')}: se ingresó ${amount.formatDecimals()}.';
+    } else {
+      return '${date.format(formatDate: 'EEEE d/MM')}: se retiró ${amount.formatDecimals()}, $description.';
+    }
+  }
+
   factory IncomeEntity.fromJson(Map<String, dynamic> json) => IncomeEntity(
         id: json["id"],
         description: json["description"],
-        date: DateTime.parse(json["date"]),
+        date: DateTime.parse(json["date"]).toLocal(),
         amount: (json["amount"] as num).toDouble(),
         typeIncome: json["typeIncome"],
         isApproved: json["isApproved"],
         state: json["state"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
+        createdAt: DateTime.parse(json["createdAt"]).toLocal(),
+        updatedAt: DateTime.parse(json["updatedAt"]).toLocal(),
         idUser: json["idUser"],
         idPointMachine: json["idPointMachine"],
         pointMachineEntity: json["PointMachine"] == null

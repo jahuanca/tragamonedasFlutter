@@ -51,7 +51,7 @@ class AddIncomePage extends StatelessWidget {
                     ),
                     GetBuilder<AddIncomeController>(
                       id: typeIncomeIdGet,
-                      builder: (_) => DropdownWidget(
+                      builder: (_) => DropdownMenuWidget(
                         onChanged: controller.onChangedTypeIncome,
                         items: controller.typesIncome,
                         value: controller.typeIncome,

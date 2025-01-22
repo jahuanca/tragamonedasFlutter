@@ -20,3 +20,4 @@ const String porcentageIdGet = 'porcentageIdGet';
 const String purchaseDateIdGet = 'purchaseDateIdGet';
 const String typeIncomeIdGet = 'typeIncomeIdGet';
 const String withPayForClientIdGet = 'withPayForClientIdGet';
+const String actionsIdGet = 'actionsIdGet';

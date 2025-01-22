@@ -22,6 +22,10 @@ class MachinesPage extends StatelessWidget {
             onRefresh: controller.getMachines,
             child: Scaffold(
               appBar: appBarWidget(text: 'Máquinas'),
+              floatingActionButton: FloatingActionButton(
+                onPressed: controller.goAdd,
+                child: const Icon(Icons.add),
+                ),
               body: GetBuilder<MachinesController>(
                 id: machinesIdGet,
                 builder: (_) => ListView.builder(
