@@ -16,6 +16,7 @@ List<Widget> actionsNormal({
   ),
   MenuOverlayWidget(
     items: OptionsMenuReport.values.toList(), 
+    idLabel: 'label',
     onTapItem: (e)=> controller.onTapReport(e),
   )
 ];

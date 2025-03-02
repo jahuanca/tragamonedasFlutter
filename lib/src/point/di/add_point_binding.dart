@@ -17,7 +17,7 @@ class AddPointBinding extends Bindings {
     Get.lazyReplace<CreatePointUseCase>(() => CreatePointUseCase(
       repository: Get.find(),
     ));
-    Get.lazyPut<AddPointControlller>(() => AddPointControlller(
+    Get.lazyPut<AddPointController>(() => AddPointController(
       createPointUseCase: Get.find(),
     ));
   }

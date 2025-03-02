@@ -1,13 +1,14 @@
 import 'package:get/get.dart';
 import 'package:traga_monedas/src/point/domain/entities/point_entity.dart';
 import 'package:traga_monedas/src/point/domain/use_cases/create_point_use_case.dart';
+import 'package:traga_monedas/src/point/ui/pages/choose_direction/choose_direction_page.dart';
 import 'package:traga_monedas/src/utils/ui/arguments.dart';
 import 'package:traga_monedas/src/utils/ui/ids_get.dart';
 import 'package:traga_monedas/src/utils/ui/utils.dart';
 import 'package:traga_monedas/src/utils/ui/validators.dart';
 import 'package:utils/utils.dart';
 
-class AddPointControlller extends GetxController {
+class AddPointController extends GetxController {
   String? errorFirstName,
       errorLastName,
       errorPhoneNumber,
@@ -26,7 +27,7 @@ class AddPointControlller extends GetxController {
 
   bool validando = false;
 
-  AddPointControlller({
+  AddPointController({
     required this.createPointUseCase,
   });
 
@@ -165,6 +166,10 @@ class AddPointControlller extends GetxController {
       validando = false;
       update([validandoIdGet]);
     }
+  }
+
+  void goChooseDirection() {
+    Get.to(() => const ChooseDirectionPage());
   }
 
   void _showSnackbarWidgetError({

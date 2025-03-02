@@ -1,6 +1,6 @@
 
 import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
+//import 'package:url_launcher/url_launcher.dart';
 
 Future<bool> sendSMS({
   required String numberPhone,
@@ -34,11 +34,7 @@ Future<bool> sendWhatsapp({
 }
 
 Future<bool> _canUrl(url) async {
-  if (await canLaunchUrl(url)) {
-    return await launchUrl(url);
-  } else {
-    return false;
-  }
+  return false;
 }
 
 void copyData(String data) {

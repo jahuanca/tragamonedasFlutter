@@ -20,7 +20,7 @@ class LoginController extends GetxController {
   });
 
   void _goToMainContent() {
-    Get.to(() => MainPage(), binding: MainBinding());
+    Get.off(() => MainPage(), binding: MainBinding());
   }
 
   void onChangedEmail(String value){
